@@ -1,0 +1,15 @@
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/examples/capi_gain/hexagon_Debug_toolv87_v73/CMakeFiles/capi_gain_q.dir
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/examples/capi_gain/hexagon_Debug_toolv87_v73/CMakeFiles/capi_gain.dir
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/examples/capi_gain/hexagon_Debug_toolv87_v73/CMakeFiles/capi_gain_static.dir
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/examples/capi_gain/hexagon_Debug_toolv87_v73/CMakeFiles/hexagonTargets.dir
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/examples/capi_gain/hexagon_Debug_toolv87_v73/CMakeFiles/qLibTargettest_main.dir
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/examples/capi_gain/hexagon_Debug_toolv87_v73/CMakeFiles/qLibTargettest_profile.dir
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/examples/capi_gain/hexagon_Debug_toolv87_v73/CMakeFiles/qLibTargettest_capi.dir
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/examples/capi_gain/hexagon_Debug_toolv87_v73/CMakeFiles/qLibTargetposal_utils.dir
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/examples/capi_gain/hexagon_Debug_toolv87_v73/CMakeFiles/qLibTargetspf_ref_counter.dir
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/examples/capi_gain/hexagon_Debug_toolv87_v73/CMakeFiles/qLibTargetspf_list_utils.dir
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/examples/capi_gain/hexagon_Debug_toolv87_v73/CMakeFiles/qLibTargetposal_stub.dir
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/examples/capi_gain/hexagon_Debug_toolv87_v73/CMakeFiles/hexagonCommonTargets.dir
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/examples/capi_gain/hexagon_Debug_toolv87_v73/CMakeFiles/qLibTargetcapi_utils_props.dir
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/examples/capi_gain/hexagon_Debug_toolv87_v73/CMakeFiles/edit_cache.dir
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/examples/capi_gain/hexagon_Debug_toolv87_v73/CMakeFiles/rebuild_cache.dir

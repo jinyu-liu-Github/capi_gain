@@ -1,0 +1,1972 @@
+/* =========================================================================
+  Copyright (c) 2019-2021, 2023 Qualcomm Technologies, Inc.
+  All Rights Reserved.
+  Confidential and Proprietary - Qualcomm Technologies, Inc.
+ * =========================================================================*/
+
+/**
+ * @file capi_gain3.c
+ * C source file to implement the Gain module
+ *
+ * Benchmark mode: select one QHL or native-C FLOAT workload below.
+ *   Uncomment exactly one BENCHMARK_* selector below before building.
+ *   Every QHL workload has a native-C counterpart with matching input and work.
+ *   FIXED and IDLE remain as additional baselines.
+ *   Keep all other selectors commented so only one workload affects the result.
+ *   三者都不定义                          → 正常音频增益处理
+ */
+
+/*------------------------------------------------------------------------
+ * Include files
+ * -----------------------------------------------------------------------*/
+#include "capi_gain.h"
+#include "qhmath.h"
+#include "qhcomplex.h"
+#include "qhblas.h"
+#include "qhdsp.h"
+#include "capi_gain_utils.h"
+#include <limits.h>
+#include <math.h>    /* sqrtf */
+#include <string.h>  /* memcpy */
+
+/*------------------------------------------------------------------------
+ * Benchmark 编译开关
+ *
+ * 新增的四组“QHL 库函数 / 原生 C”对照测试：
+ *   BENCHMARK_QHMATH_SQRT_F         -> qhmath_sqrt_f
+ *   BENCHMARK_NATIVE_SQRT_F         -> sqrtf
+ *   BENCHMARK_QHCOMPLEX_CABS_F      -> qhcomplex_cabs_f
+ *   BENCHMARK_NATIVE_COMPLEX_CABS_F -> sqrtf(real*real + imag*imag)
+ *   BENCHMARK_QHBLAS_VECTOR_DOT_F   -> qhblas_f_vector_dot_af
+ *   BENCHMARK_NATIVE_VECTOR_DOT_F   -> C 语言向量点积循环
+ *   BENCHMARK_QHDSP_IIR_F           -> qhdsp_iir_af
+ *   BENCHMARK_NATIVE_IIR_F          -> C 语言二阶 IIR
+ *
+ * capi_gain.c 中原有测试也保留在本文件中，可按需继续使用。
+ * 只允许打开一个 BENCHMARK_* 宏；都不定义时执行正常 Gain。
+ * -----------------------------------------------------------------------*/
+/* 当前默认测试 QHBLAS 向量点积。 */
+/*
+ * Fixed-point / integer benchmark group.
+ *
+ * Enable exactly one selector. Every QHL case is paired with a native-C
+ * implementation using the same input data and output format.
+ *
+ *   QHMATH division:    int16 numerator/denominator -> Q8.8 int16 result
+ *   QHMATH square root: unsigned integer input -> Q8.8 uint16 result
+ *   QHBLAS dot product: int16 vectors -> int64 accumulated result
+ *   QHDSP FIR:          Q15 samples/coefficients -> Q15 int16 result
+ */
+#define BENCHMARK_QHMATH_DIV_AH
+// #define BENCHMARK_NATIVE_DIV_Q8_8
+// #define BENCHMARK_QHMATH_SQRT_AH
+// #define BENCHMARK_NATIVE_INTEGER_SQRT
+// #define BENCHMARK_QHBLAS_VECTOR_DOT_AH
+// #define BENCHMARK_NATIVE_INT16_VECTOR_DOT
+// #define BENCHMARK_QHDSP_FIR_AH
+// #define BENCHMARK_NATIVE_FIXED_FIR
+
+/* Legacy floating-point selectors retained from the template, all disabled. */
+// #define BENCHMARK_QHMATH_SQRT_F
+// #define BENCHMARK_NATIVE_SQRT_F
+// #define BENCHMARK_QHCOMPLEX_CABS_F
+// #define BENCHMARK_NATIVE_COMPLEX_CABS_F
+// #define BENCHMARK_QHBLAS_VECTOR_DOT_F
+// #define BENCHMARK_NATIVE_VECTOR_DOT_F
+// #define BENCHMARK_QHDSP_IIR_F
+// #define BENCHMARK_NATIVE_IIR_F
+
+/* capi_gain.c 中原有测试（默认全部关闭）。 */
+// #define BENCHMARK_QHMATH_DIV_F
+// #define BENCHMARK_NATIVE_DIV_F
+// #define BENCHMARK_QHCOMPLEX_CONJ_F
+// #define BENCHMARK_NATIVE_COMPLEX_CONJ_F
+// #define BENCHMARK_QHBLAS_VECTOR_ADD_F
+// #define BENCHMARK_NATIVE_VECTOR_ADD_F
+// #define BENCHMARK_QHDSP_FIR_F
+// #define BENCHMARK_NATIVE_FIR_F
+// #define BENCHMARK_FIXED_RECIP_Q12
+// #define BENCHMARK_IDLE
+
+/* 每帧 process 被调用时执行的 benchmark 循环次数。
+ *
+ * 注意：
+ * 1. FLOAT / FIXED 模式下，该值有效。
+ * 2. IDLE 模式下，该值不参与计算。
+ * 3. FLOAT division stress 模式包含浮点除法，不建议一开始就用很大循环次数。
+ * 4. 建议逐步调大：1000 → 2000 → 3000 → 5000。
+ */
+#define BENCH_ITERATIONS 3000
+
+/*
+ * Fixed-point vector lengths, measured in elements rather than bit width.
+ * Arrays use the QHL aligned element types; the length values are powers of
+ * two because the benchmark feedback index uses i & (size - 1).
+ */
+#define FIXED_MATH_VECTOR_SIZE 16
+#define FIXED_DOT_VECTOR_SIZE  8
+
+#if (FIXED_DOT_VECTOR_SIZE != 8) &&  \
+    (FIXED_DOT_VECTOR_SIZE != 16) && \
+    (FIXED_DOT_VECTOR_SIZE != 32) && \
+    (FIXED_DOT_VECTOR_SIZE != 64) && \
+    (FIXED_DOT_VECTOR_SIZE != 128)
+#error "FIXED_DOT_VECTOR_SIZE must be 8, 16, 32, 64 or 128."
+#endif
+
+/*------------------------------------------------------------------------
+ * Benchmark 模式互斥检查
+ * -----------------------------------------------------------------------*/
+#if (defined(BENCHMARK_QHMATH_DIV_AH) +          \
+     defined(BENCHMARK_NATIVE_DIV_Q8_8) +        \
+     defined(BENCHMARK_QHMATH_SQRT_AH) +         \
+     defined(BENCHMARK_NATIVE_INTEGER_SQRT) +    \
+     defined(BENCHMARK_QHBLAS_VECTOR_DOT_AH) +   \
+     defined(BENCHMARK_NATIVE_INT16_VECTOR_DOT) + \
+     defined(BENCHMARK_QHDSP_FIR_AH) +           \
+     defined(BENCHMARK_NATIVE_FIXED_FIR) +       \
+     defined(BENCHMARK_QHMATH_SQRT_F) +          \
+     defined(BENCHMARK_NATIVE_SQRT_F) +          \
+     defined(BENCHMARK_QHCOMPLEX_CABS_F) +       \
+     defined(BENCHMARK_NATIVE_COMPLEX_CABS_F) +  \
+     defined(BENCHMARK_QHBLAS_VECTOR_DOT_F) +    \
+     defined(BENCHMARK_NATIVE_VECTOR_DOT_F) +    \
+     defined(BENCHMARK_QHDSP_IIR_F) +            \
+     defined(BENCHMARK_NATIVE_IIR_F) +           \
+     defined(BENCHMARK_QHMATH_DIV_F) +           \
+     defined(BENCHMARK_NATIVE_DIV_F) +           \
+     defined(BENCHMARK_QHCOMPLEX_CONJ_F) +       \
+     defined(BENCHMARK_NATIVE_COMPLEX_CONJ_F) +  \
+     defined(BENCHMARK_QHBLAS_VECTOR_ADD_F) +    \
+     defined(BENCHMARK_NATIVE_VECTOR_ADD_F) +    \
+     defined(BENCHMARK_QHDSP_FIR_F) +            \
+     defined(BENCHMARK_NATIVE_FIR_F) +           \
+     defined(BENCHMARK_FIXED_RECIP_Q12) +        \
+     defined(BENCHMARK_IDLE)) > 1
+#error "Only one benchmark mode can be enabled at a time."
+#endif
+
+#if defined(BENCHMARK_QHMATH_DIV_AH) ||        \
+    defined(BENCHMARK_NATIVE_DIV_Q8_8) ||      \
+    defined(BENCHMARK_QHMATH_SQRT_AH) ||       \
+    defined(BENCHMARK_NATIVE_INTEGER_SQRT) ||  \
+    defined(BENCHMARK_QHBLAS_VECTOR_DOT_AH) || \
+    defined(BENCHMARK_NATIVE_INT16_VECTOR_DOT) || \
+    defined(BENCHMARK_QHDSP_FIR_AH) ||         \
+    defined(BENCHMARK_NATIVE_FIXED_FIR) ||     \
+    defined(BENCHMARK_QHMATH_SQRT_F) ||        \
+    defined(BENCHMARK_NATIVE_SQRT_F) ||        \
+    defined(BENCHMARK_QHCOMPLEX_CABS_F) ||     \
+    defined(BENCHMARK_NATIVE_COMPLEX_CABS_F) || \
+    defined(BENCHMARK_QHBLAS_VECTOR_DOT_F) ||  \
+    defined(BENCHMARK_NATIVE_VECTOR_DOT_F) ||  \
+    defined(BENCHMARK_QHDSP_IIR_F) ||          \
+    defined(BENCHMARK_NATIVE_IIR_F) ||         \
+    defined(BENCHMARK_QHMATH_DIV_F) ||         \
+    defined(BENCHMARK_NATIVE_DIV_F) ||         \
+    defined(BENCHMARK_QHCOMPLEX_CONJ_F) ||     \
+    defined(BENCHMARK_NATIVE_COMPLEX_CONJ_F) || \
+    defined(BENCHMARK_QHBLAS_VECTOR_ADD_F) ||  \
+    defined(BENCHMARK_NATIVE_VECTOR_ADD_F) ||  \
+    defined(BENCHMARK_QHDSP_FIR_F) ||          \
+    defined(BENCHMARK_NATIVE_FIR_F) ||         \
+    defined(BENCHMARK_FIXED_RECIP_Q12) ||      \
+    defined(BENCHMARK_IDLE)
+#define CAPI_GAIN_BENCHMARK_ENABLED
+#endif
+
+#if defined(BENCHMARK_QHMATH_DIV_AH) ||          \
+    defined(BENCHMARK_NATIVE_DIV_Q8_8) ||        \
+    defined(BENCHMARK_QHMATH_SQRT_AH) ||         \
+    defined(BENCHMARK_NATIVE_INTEGER_SQRT) ||    \
+    defined(BENCHMARK_QHBLAS_VECTOR_DOT_AH) ||   \
+    defined(BENCHMARK_NATIVE_INT16_VECTOR_DOT) || \
+    defined(BENCHMARK_QHDSP_FIR_AH) ||           \
+    defined(BENCHMARK_NATIVE_FIXED_FIR)
+#define CAPI_GAIN_FIXED_FORMAT_BENCHMARK
+#endif
+
+#if defined(BENCHMARK_QHMATH_SQRT_F) ||        \
+    defined(BENCHMARK_NATIVE_SQRT_F) ||        \
+    defined(BENCHMARK_QHCOMPLEX_CABS_F) ||     \
+    defined(BENCHMARK_NATIVE_COMPLEX_CABS_F) || \
+    defined(BENCHMARK_QHBLAS_VECTOR_DOT_F) ||  \
+    defined(BENCHMARK_NATIVE_VECTOR_DOT_F) ||  \
+    defined(BENCHMARK_QHDSP_IIR_F) ||          \
+    defined(BENCHMARK_NATIVE_IIR_F) ||         \
+    defined(BENCHMARK_QHMATH_DIV_F) ||         \
+    defined(BENCHMARK_NATIVE_DIV_F) ||         \
+    defined(BENCHMARK_QHCOMPLEX_CONJ_F) ||     \
+    defined(BENCHMARK_NATIVE_COMPLEX_CONJ_F) || \
+    defined(BENCHMARK_QHBLAS_VECTOR_ADD_F) ||  \
+    defined(BENCHMARK_NATIVE_VECTOR_ADD_F) ||  \
+    defined(BENCHMARK_QHDSP_FIR_F) ||          \
+    defined(BENCHMARK_NATIVE_FIR_F)
+#define CAPI_GAIN_FLOAT_BENCHMARK
+#endif
+
+#if defined(CAPI_GAIN_FLOAT_BENCHMARK) ||          \
+    defined(CAPI_GAIN_FIXED_FORMAT_BENCHMARK) ||   \
+    defined(BENCHMARK_FIXED_RECIP_Q12)
+#define CAPI_GAIN_COMPUTE_BENCHMARK
+#endif
+
+/*------------------------------------------------------------------------
+ * Benchmark 统计变量
+ * -----------------------------------------------------------------------*/
+#ifdef CAPI_GAIN_BENCHMARK_ENABLED
+static volatile uint32_t capi_gain_bench_process_count     = 0;
+static volatile uint32_t capi_gain_bench_first_log_done    = 0;
+static volatile uint64_t capi_gain_bench_total_iterations  = 0;
+#endif
+
+#ifdef CAPI_GAIN_FLOAT_BENCHMARK
+static volatile float capi_gain_bench_float_sink = 0.0f;
+static volatile int32_t capi_gain_bench_status_sink = 0;
+#endif
+
+#ifdef CAPI_GAIN_FIXED_FORMAT_BENCHMARK
+static volatile int64_t capi_gain_bench_fixed64_sink = 0;
+static volatile int32_t capi_gain_bench_fixed32_sink = 0;
+static volatile int32_t capi_gain_bench_status_sink = 0;
+#endif
+
+#ifdef BENCHMARK_FIXED_RECIP_Q12
+static volatile int32_t capi_gain_bench_fixed_sink = 0;
+#endif
+
+/*------------------------------------------------------------------------
+ * Static function declarations
+ * -----------------------------------------------------------------------*/
+static capi_err_t capi_gain_process(capi_t *_pif,
+                                    capi_stream_data_t *input[],
+                                    capi_stream_data_t *output[]);
+
+static capi_err_t capi_gain_end(capi_t *_pif);
+
+static capi_err_t capi_gain_set_param(capi_t *                _pif,
+                                      uint32_t                param_id,
+                                      const capi_port_info_t *port_info_ptr,
+                                      capi_buf_t *            params_ptr);
+
+static capi_err_t capi_gain_get_param(capi_t *                _pif,
+                                      uint32_t                param_id,
+                                      const capi_port_info_t *port_info_ptr,
+                                      capi_buf_t *            params_ptr);
+
+static capi_err_t capi_gain_set_properties(capi_t *_pif,
+                                           capi_proplist_t *props_ptr);
+
+static capi_err_t capi_gain_get_properties(capi_t *_pif,
+                                           capi_proplist_t *props_ptr);
+
+#ifdef CAPI_GAIN_BENCHMARK_ENABLED
+static void capi_gain_run_benchmark(capi_gain_t        *me_ptr,
+                                    capi_stream_data_t *input[],
+                                    capi_stream_data_t *output[]);
+#endif
+
+#ifdef BENCHMARK_NATIVE_INTEGER_SQRT
+static uint32_t capi_gain_integer_sqrt_u32(uint32_t value);
+#endif
+
+#ifdef BENCHMARK_NATIVE_INTEGER_SQRT
+/*
+ * Integer square root, floor(sqrt(value)).  The fixed-point SQRT benchmark
+ * passes input << 16, therefore this return value is sqrt(input) in Q8.8.
+ */
+static uint32_t capi_gain_integer_sqrt_u32(uint32_t value)
+{
+   uint32_t remainder = value;
+   uint32_t result = 0;
+   uint32_t bit = (uint32_t)1 << 30;
+
+   while (bit > remainder)
+   {
+      bit >>= 2;
+   }
+
+   while (0 != bit)
+   {
+      if (remainder >= (result + bit))
+      {
+         remainder -= result + bit;
+         result = (result >> 1) + bit;
+      }
+      else
+      {
+         result >>= 1;
+      }
+      bit >>= 2;
+   }
+
+   return result;
+}
+#endif
+
+/* Function table for gain module */
+static capi_vtbl_t vtbl = {
+   capi_gain_process,
+   capi_gain_end,
+   capi_gain_set_param,
+   capi_gain_get_param,
+   capi_gain_set_properties,
+   capi_gain_get_properties
+};
+
+/* -------------------------------------------------------------------------
+ * Function name: capi_gain_get_static_properties
+ * -------------------------------------------------------------------------*/
+capi_err_t capi_gain_get_static_properties(capi_proplist_t *init_set_properties,
+                                           capi_proplist_t *static_properties)
+{
+   capi_err_t capi_result = CAPI_EOK;
+
+   if (NULL != static_properties)
+   {
+      capi_result =
+         capi_gain_process_get_properties((capi_gain_t *)NULL,
+                                          static_properties);
+
+      if (CAPI_FAILED(capi_result))
+      {
+         AR_MSG(DBG_ERROR_PRIO,
+                "CAPI GAIN: get static properties failed!");
+         return capi_result;
+      }
+      else
+      {
+         AR_MSG(DBG_HIGH_PRIO,
+                "CAPI GAIN: get static properties successful");
+      }
+   }
+   else
+   {
+      AR_MSG(DBG_ERROR_PRIO,
+             "CAPI GAIN: Get static properties received NULL bad pointer");
+   }
+
+   return capi_result;
+}
+
+/*------------------------------------------------------------------------
+ * Function name: capi_gain_init
+ * -----------------------------------------------------------------------*/
+capi_err_t capi_gain_init(capi_t *_pif,
+                          capi_proplist_t *init_set_properties)
+{
+   capi_err_t capi_result = CAPI_EOK;
+
+   if (NULL == _pif || NULL == init_set_properties)
+   {
+      AR_MSG(DBG_ERROR_PRIO,
+             "CAPI GAIN: Init received NULL pointers, failing");
+      return CAPI_EBADPARAM;
+   }
+
+   capi_gain_t *me_ptr = (capi_gain_t *)_pif;
+
+   memset(me_ptr, 0, sizeof(capi_gain_t));
+   me_ptr->vtbl.vtbl_ptr = &vtbl;
+
+   capi_gain_module_init_media_fmt_v2(&me_ptr->operating_media_fmt);
+
+   uint16_t apply_gain          = 0x2000;
+   me_ptr->gain_config.gain_q12 = apply_gain >> 1;
+   me_ptr->gain_config.gain_q13 = apply_gain;
+
+   AR_MSG(DBG_HIGH_PRIO,
+          "CAPI GAIN: Init - default gain_q12=0x%04X, gain_q13=0x%04X",
+          me_ptr->gain_config.gain_q12,
+          me_ptr->gain_config.gain_q13);
+
+#if defined(BENCHMARK_QHMATH_DIV_AH)
+   AR_MSG(DBG_HIGH_PRIO,
+          "CAPI GAIN: >>> BENCHMARK: QHMATH DIV_AH, iterations=%lu, elements=%lu, output=Q8.8 <<<",
+          (uint32_t)BENCH_ITERATIONS,
+          (uint32_t)FIXED_MATH_VECTOR_SIZE);
+#elif defined(BENCHMARK_NATIVE_DIV_Q8_8)
+   AR_MSG(DBG_HIGH_PRIO,
+          "CAPI GAIN: >>> BENCHMARK: NATIVE Q8.8 DIV, iterations=%lu, elements=%lu <<<",
+          (uint32_t)BENCH_ITERATIONS,
+          (uint32_t)FIXED_MATH_VECTOR_SIZE);
+#elif defined(BENCHMARK_QHMATH_SQRT_AH)
+   AR_MSG(DBG_HIGH_PRIO,
+          "CAPI GAIN: >>> BENCHMARK: QHMATH SQRT_AH, iterations=%lu, elements=%lu, output=Q8.8 <<<",
+          (uint32_t)BENCH_ITERATIONS,
+          (uint32_t)FIXED_MATH_VECTOR_SIZE);
+#elif defined(BENCHMARK_NATIVE_INTEGER_SQRT)
+   AR_MSG(DBG_HIGH_PRIO,
+          "CAPI GAIN: >>> BENCHMARK: NATIVE INTEGER SQRT Q8.8, iterations=%lu, elements=%lu <<<",
+          (uint32_t)BENCH_ITERATIONS,
+          (uint32_t)FIXED_MATH_VECTOR_SIZE);
+#elif defined(BENCHMARK_QHBLAS_VECTOR_DOT_AH)
+   AR_MSG(DBG_HIGH_PRIO,
+          "CAPI GAIN: >>> BENCHMARK: QHBLAS INT16 VECTOR_DOT_AH, iterations=%lu, elements=%lu <<<",
+          (uint32_t)BENCH_ITERATIONS,
+          (uint32_t)FIXED_DOT_VECTOR_SIZE);
+#elif defined(BENCHMARK_NATIVE_INT16_VECTOR_DOT)
+   AR_MSG(DBG_HIGH_PRIO,
+          "CAPI GAIN: >>> BENCHMARK: NATIVE INT16 VECTOR DOT, iterations=%lu, elements=%lu <<<",
+          (uint32_t)BENCH_ITERATIONS,
+          (uint32_t)FIXED_DOT_VECTOR_SIZE);
+#elif defined(BENCHMARK_QHDSP_FIR_AH)
+   AR_MSG(DBG_HIGH_PRIO,
+          "CAPI GAIN: >>> BENCHMARK: QHDSP Q15 FIR_AH, iterations=%lu, taps=8, samples=8 <<<",
+          (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_NATIVE_FIXED_FIR)
+   AR_MSG(DBG_HIGH_PRIO,
+          "CAPI GAIN: >>> BENCHMARK: NATIVE Q15 FIR, iterations=%lu, taps=8, samples=8 <<<",
+          (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_QHMATH_SQRT_F)
+   AR_MSG(DBG_HIGH_PRIO,
+          "CAPI GAIN: >>> BENCHMARK: QHMATH SQRT_F, iterations=%lu, calls_per_iteration=4 <<<",
+          (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_NATIVE_SQRT_F)
+   AR_MSG(DBG_HIGH_PRIO,
+          "CAPI GAIN: >>> BENCHMARK: NATIVE SQRTF, iterations=%lu, calls_per_iteration=4 <<<",
+          (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_QHCOMPLEX_CABS_F)
+   AR_MSG(DBG_HIGH_PRIO,
+          "CAPI GAIN: >>> BENCHMARK: QHCOMPLEX CABS_F, iterations=%lu, calls_per_iteration=4 <<<",
+          (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_NATIVE_COMPLEX_CABS_F)
+   AR_MSG(DBG_HIGH_PRIO,
+          "CAPI GAIN: >>> BENCHMARK: NATIVE COMPLEX MAGNITUDE, iterations=%lu, calls_per_iteration=4 <<<",
+          (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_QHBLAS_VECTOR_DOT_F)
+   AR_MSG(DBG_HIGH_PRIO,
+          "CAPI GAIN: >>> BENCHMARK: QHBLAS VECTOR_DOT_AF, iterations=%lu, elements_per_call=%lu <<<",
+          (uint32_t)BENCH_ITERATIONS,
+          (uint32_t)QHBLAS_DOT_VECTOR_SIZE);
+#elif defined(BENCHMARK_NATIVE_VECTOR_DOT_F)
+   AR_MSG(DBG_HIGH_PRIO,
+          "CAPI GAIN: >>> BENCHMARK: NATIVE VECTOR DOT, iterations=%lu, elements_per_iteration=%lu <<<",
+          (uint32_t)BENCH_ITERATIONS,
+          (uint32_t)QHBLAS_DOT_VECTOR_SIZE);
+#elif defined(BENCHMARK_QHDSP_IIR_F)
+   AR_MSG(DBG_HIGH_PRIO,
+          "CAPI GAIN: >>> BENCHMARK: QHDSP IIR_AF, iterations=%lu, biquads=1, samples=8 <<<",
+          (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_NATIVE_IIR_F)
+   AR_MSG(DBG_HIGH_PRIO,
+          "CAPI GAIN: >>> BENCHMARK: NATIVE IIR, iterations=%lu, biquads=1, samples=8 <<<",
+          (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_QHMATH_DIV_F)
+   AR_MSG(DBG_HIGH_PRIO,
+           "CAPI GAIN: >>> BENCHMARK: QHMATH DIV_F, iterations=%lu, calls_per_iteration=4 <<<",
+           (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_NATIVE_DIV_F)
+   AR_MSG(DBG_HIGH_PRIO,
+          "CAPI GAIN: >>> BENCHMARK: NATIVE FLOAT DIV, iterations=%lu, calls_per_iteration=4 <<<",
+          (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_QHCOMPLEX_CONJ_F)
+   AR_MSG(DBG_HIGH_PRIO,
+          "CAPI GAIN: >>> BENCHMARK: QHCOMPLEX CONJ_F, iterations=%lu, calls_per_iteration=4 <<<",
+          (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_NATIVE_COMPLEX_CONJ_F)
+   AR_MSG(DBG_HIGH_PRIO,
+          "CAPI GAIN: >>> BENCHMARK: NATIVE COMPLEX CONJ, iterations=%lu, calls_per_iteration=4 <<<",
+          (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_QHBLAS_VECTOR_ADD_F)
+   AR_MSG(DBG_HIGH_PRIO,
+          "CAPI GAIN: >>> BENCHMARK: QHBLAS VECTOR_ADD_AF, iterations=%lu, elements_per_call=8 <<<",
+          (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_NATIVE_VECTOR_ADD_F)
+   AR_MSG(DBG_HIGH_PRIO,
+          "CAPI GAIN: >>> BENCHMARK: NATIVE VECTOR ADD, iterations=%lu, elements_per_iteration=8 <<<",
+          (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_QHDSP_FIR_F)
+   AR_MSG(DBG_HIGH_PRIO,
+          "CAPI GAIN: >>> BENCHMARK: QHDSP FIR_AF, iterations=%lu, taps=8, samples=8 <<<",
+          (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_NATIVE_FIR_F)
+   AR_MSG(DBG_HIGH_PRIO,
+          "CAPI GAIN: >>> BENCHMARK: NATIVE FIR, iterations=%lu, taps=8, samples=8 <<<",
+          (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_FIXED_RECIP_Q12)
+   AR_MSG(DBG_HIGH_PRIO,
+          "CAPI GAIN: >>> BENCHMARK MODE: FIXED RECIP MUL, iterations=%lu <<<",
+          (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_IDLE)
+   AR_MSG(DBG_HIGH_PRIO,
+          "CAPI GAIN: >>> BENCHMARK MODE: IDLE / PASS-THROUGH BASELINE <<<");
+#else
+   AR_MSG(DBG_HIGH_PRIO,
+          "CAPI GAIN: Normal audio gain processing mode");
+#endif
+
+   capi_result = capi_gain_process_set_properties(me_ptr,
+                                                  init_set_properties);
+
+   if (CAPI_FAILED(capi_result))
+   {
+      AR_MSG(DBG_ERROR_PRIO,
+             "CAPI GAIN: Initialization Set Property Failed");
+      return capi_result;
+   }
+
+   AR_MSG(DBG_HIGH_PRIO,
+          "CAPI GAIN: Init from props - gain_q12=0x%04X, gain_q13=0x%04X, enable=%lu",
+          me_ptr->gain_config.gain_q12,
+          me_ptr->gain_config.gain_q13,
+          (uint32_t)me_ptr->gain_config.enable);
+
+#ifdef CAPI_GAIN_BENCHMARK_ENABLED
+   /* 关键修改：
+    * benchmark 模式下，不管 init props 里的 enable 是 0 还是 1，
+    * 都强制告诉 framework：这个模块需要 process。
+    */
+   AR_MSG(DBG_HIGH_PRIO,
+          "CAPI GAIN: Benchmark mode - force process event enable=1 after init");
+
+   capi_result |= capi_gain_raise_process_event(me_ptr, TRUE);
+#endif
+
+   AR_MSG(DBG_HIGH_PRIO,
+          "CAPI GAIN: Initialization completed !!");
+
+   return capi_result;
+}
+
+/*------------------------------------------------------------------------
+ * Benchmark 函数
+ * -----------------------------------------------------------------------*/
+#ifdef CAPI_GAIN_BENCHMARK_ENABLED
+
+static void capi_gain_run_benchmark(capi_gain_t        *me_ptr,
+                                    capi_stream_data_t *input[],
+                                    capi_stream_data_t *output[])
+{
+   capi_gain_bench_process_count++;
+
+#ifdef CAPI_GAIN_COMPUTE_BENCHMARK
+   capi_gain_bench_total_iterations += BENCH_ITERATIONS;
+#endif
+
+   if (0 == capi_gain_bench_first_log_done)
+   {
+      capi_gain_bench_first_log_done = 1;
+
+#if defined(BENCHMARK_QHMATH_DIV_AH)
+      AR_MSG(DBG_HIGH_PRIO,
+             "CAPI BENCH: first process call, mode=QHMATH_DIV_AH, iterations=%lu, elements=%lu",
+             (uint32_t)BENCH_ITERATIONS,
+             (uint32_t)FIXED_MATH_VECTOR_SIZE);
+#elif defined(BENCHMARK_NATIVE_DIV_Q8_8)
+      AR_MSG(DBG_HIGH_PRIO,
+             "CAPI BENCH: first process call, mode=NATIVE_DIV_Q8_8, iterations=%lu, elements=%lu",
+             (uint32_t)BENCH_ITERATIONS,
+             (uint32_t)FIXED_MATH_VECTOR_SIZE);
+#elif defined(BENCHMARK_QHMATH_SQRT_AH)
+      AR_MSG(DBG_HIGH_PRIO,
+             "CAPI BENCH: first process call, mode=QHMATH_SQRT_AH, iterations=%lu, elements=%lu",
+             (uint32_t)BENCH_ITERATIONS,
+             (uint32_t)FIXED_MATH_VECTOR_SIZE);
+#elif defined(BENCHMARK_NATIVE_INTEGER_SQRT)
+      AR_MSG(DBG_HIGH_PRIO,
+             "CAPI BENCH: first process call, mode=NATIVE_INTEGER_SQRT, iterations=%lu, elements=%lu",
+             (uint32_t)BENCH_ITERATIONS,
+             (uint32_t)FIXED_MATH_VECTOR_SIZE);
+#elif defined(BENCHMARK_QHBLAS_VECTOR_DOT_AH)
+      AR_MSG(DBG_HIGH_PRIO,
+             "CAPI BENCH: first process call, mode=QHBLAS_VECTOR_DOT_AH, iterations=%lu, elements=%lu",
+             (uint32_t)BENCH_ITERATIONS,
+             (uint32_t)FIXED_DOT_VECTOR_SIZE);
+#elif defined(BENCHMARK_NATIVE_INT16_VECTOR_DOT)
+      AR_MSG(DBG_HIGH_PRIO,
+             "CAPI BENCH: first process call, mode=NATIVE_INT16_VECTOR_DOT, iterations=%lu, elements=%lu",
+             (uint32_t)BENCH_ITERATIONS,
+             (uint32_t)FIXED_DOT_VECTOR_SIZE);
+#elif defined(BENCHMARK_QHDSP_FIR_AH)
+      AR_MSG(DBG_HIGH_PRIO,
+             "CAPI BENCH: first process call, mode=QHDSP_FIR_AH, iterations=%lu",
+             (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_NATIVE_FIXED_FIR)
+      AR_MSG(DBG_HIGH_PRIO,
+             "CAPI BENCH: first process call, mode=NATIVE_FIXED_FIR, iterations=%lu",
+             (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_QHMATH_SQRT_F)
+      AR_MSG(DBG_HIGH_PRIO,
+             "CAPI BENCH: first process call, mode=QHMATH_SQRT_F, iterations=%lu",
+             (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_NATIVE_SQRT_F)
+      AR_MSG(DBG_HIGH_PRIO,
+             "CAPI BENCH: first process call, mode=NATIVE_SQRTF, iterations=%lu",
+             (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_QHCOMPLEX_CABS_F)
+      AR_MSG(DBG_HIGH_PRIO,
+             "CAPI BENCH: first process call, mode=QHCOMPLEX_CABS_F, iterations=%lu",
+             (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_NATIVE_COMPLEX_CABS_F)
+      AR_MSG(DBG_HIGH_PRIO,
+             "CAPI BENCH: first process call, mode=NATIVE_COMPLEX_MAGNITUDE, iterations=%lu",
+             (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_QHBLAS_VECTOR_DOT_F)
+      AR_MSG(DBG_HIGH_PRIO,
+             "CAPI BENCH: first process call, mode=QHBLAS_VECTOR_DOT_AF, iterations=%lu, elements=%lu",
+             (uint32_t)BENCH_ITERATIONS,
+             (uint32_t)QHBLAS_DOT_VECTOR_SIZE);
+#elif defined(BENCHMARK_NATIVE_VECTOR_DOT_F)
+      AR_MSG(DBG_HIGH_PRIO,
+             "CAPI BENCH: first process call, mode=NATIVE_VECTOR_DOT, iterations=%lu, elements=%lu",
+             (uint32_t)BENCH_ITERATIONS,
+             (uint32_t)QHBLAS_DOT_VECTOR_SIZE);
+#elif defined(BENCHMARK_QHDSP_IIR_F)
+      AR_MSG(DBG_HIGH_PRIO,
+             "CAPI BENCH: first process call, mode=QHDSP_IIR_AF, iterations=%lu",
+             (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_NATIVE_IIR_F)
+      AR_MSG(DBG_HIGH_PRIO,
+             "CAPI BENCH: first process call, mode=NATIVE_IIR, iterations=%lu",
+             (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_QHMATH_DIV_F)
+      AR_MSG(DBG_HIGH_PRIO,
+             "CAPI BENCH: first process call, mode=QHMATH_DIV_F, iterations=%lu",
+             (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_NATIVE_DIV_F)
+      AR_MSG(DBG_HIGH_PRIO,
+             "CAPI BENCH: first process call, mode=NATIVE_FLOAT_DIV, iterations=%lu",
+             (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_QHCOMPLEX_CONJ_F)
+      AR_MSG(DBG_HIGH_PRIO,
+             "CAPI BENCH: first process call, mode=QHCOMPLEX_CONJ_F, iterations=%lu",
+             (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_NATIVE_COMPLEX_CONJ_F)
+      AR_MSG(DBG_HIGH_PRIO,
+             "CAPI BENCH: first process call, mode=NATIVE_COMPLEX_CONJ, iterations=%lu",
+             (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_QHBLAS_VECTOR_ADD_F)
+      AR_MSG(DBG_HIGH_PRIO,
+             "CAPI BENCH: first process call, mode=QHBLAS_VECTOR_ADD_AF, iterations=%lu",
+             (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_NATIVE_VECTOR_ADD_F)
+      AR_MSG(DBG_HIGH_PRIO,
+             "CAPI BENCH: first process call, mode=NATIVE_VECTOR_ADD, iterations=%lu",
+             (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_QHDSP_FIR_F)
+      AR_MSG(DBG_HIGH_PRIO,
+             "CAPI BENCH: first process call, mode=QHDSP_FIR_AF, iterations=%lu",
+             (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_NATIVE_FIR_F)
+      AR_MSG(DBG_HIGH_PRIO,
+             "CAPI BENCH: first process call, mode=NATIVE_FIR, iterations=%lu",
+             (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_FIXED_RECIP_Q12)
+      AR_MSG(DBG_HIGH_PRIO,
+             "CAPI BENCH: first process call, mode=FIXED_RECIP_MUL, iterations=%lu",
+             (uint32_t)BENCH_ITERATIONS);
+#elif defined(BENCHMARK_IDLE)
+      AR_MSG(DBG_HIGH_PRIO,
+             "CAPI BENCH: first process call, mode=IDLE");
+#endif
+   }
+
+#if defined(BENCHMARK_QHMATH_DIV_AH) || defined(BENCHMARK_NATIVE_DIV_Q8_8)
+   {
+      static int16_a8_t numerator[FIXED_MATH_VECTOR_SIZE];
+      static int16_a8_t denominator[FIXED_MATH_VECTOR_SIZE];
+      static int16_a8_t quotient_q8_8[FIXED_MATH_VECTOR_SIZE];
+      int32_t status = 0;
+      int32_t seed =
+         (int32_t)((uint32_t)capi_gain_bench_fixed32_sink & 0x3F);
+
+      for (uint32_t element = 0;
+           element < FIXED_MATH_VECTOR_SIZE;
+           element++)
+      {
+         int32_t magnitude = ((int32_t)element + 1) * 64;
+         numerator[element] =
+            (int16_t)((0 != (element & 1)) ? -magnitude : magnitude);
+         denominator[element] =
+            (int16_t)(((int32_t)(element % 7) + 1) * 64);
+         quotient_q8_8[element] = 0;
+      }
+      numerator[0] = (int16_t)(numerator[0] + seed);
+
+      for (int32_t i = 0; i < BENCH_ITERATIONS; i++)
+      {
+#if defined(BENCHMARK_QHMATH_DIV_AH)
+         status |= qhmath_div_ah(numerator,
+                                 denominator,
+                                 quotient_q8_8,
+                                 FIXED_MATH_VECTOR_SIZE);
+#else
+         for (uint32_t element = 0;
+              element < FIXED_MATH_VECTOR_SIZE;
+              element++)
+         {
+            int32_t scaled_numerator =
+               (int32_t)numerator[element] * 256;
+            int32_t quotient =
+               scaled_numerator / (int32_t)denominator[element];
+
+            if (quotient > INT16_MAX)
+            {
+               quotient = INT16_MAX;
+            }
+            else if (quotient < INT16_MIN)
+            {
+               quotient = INT16_MIN;
+            }
+            quotient_q8_8[element] = (int16_t)quotient;
+         }
+#endif
+         {
+            uint32_t index =
+               (uint32_t)i & (FIXED_MATH_VECTOR_SIZE - 1);
+            numerator[index] =
+               (int16_t)(64 + ((uint16_t)quotient_q8_8[index] & 0x3F));
+         }
+      }
+
+      capi_gain_bench_status_sink = status;
+      capi_gain_bench_fixed32_sink =
+         (int32_t)quotient_q8_8[0] +
+         (int32_t)quotient_q8_8[FIXED_MATH_VECTOR_SIZE - 1] +
+         status;
+      capi_gain_bench_fixed64_sink =
+         (int64_t)capi_gain_bench_fixed32_sink;
+   }
+
+#elif defined(BENCHMARK_QHMATH_SQRT_AH) || \
+      defined(BENCHMARK_NATIVE_INTEGER_SQRT)
+   {
+      static uint16_a8_t radicand[FIXED_MATH_VECTOR_SIZE];
+      static uint16_a8_t root_q8_8[FIXED_MATH_VECTOR_SIZE];
+      int32_t status = 0;
+      uint32_t seed =
+         (uint32_t)capi_gain_bench_fixed32_sink & 0x0F;
+
+      for (uint32_t element = 0;
+           element < FIXED_MATH_VECTOR_SIZE;
+           element++)
+      {
+         uint32_t value = element + 1;
+         radicand[element] = (uint16_t)(value * value);
+         root_q8_8[element] = 0;
+      }
+      radicand[0] = (uint16_t)(radicand[0] + seed);
+
+      for (int32_t i = 0; i < BENCH_ITERATIONS; i++)
+      {
+#if defined(BENCHMARK_QHMATH_SQRT_AH)
+         status |= qhmath_sqrt_ah(radicand,
+                                  root_q8_8,
+                                  FIXED_MATH_VECTOR_SIZE);
+#else
+         for (uint32_t element = 0;
+              element < FIXED_MATH_VECTOR_SIZE;
+              element++)
+         {
+            uint32_t q16_value = (uint32_t)radicand[element] << 16;
+            root_q8_8[element] =
+               (uint16_t)capi_gain_integer_sqrt_u32(q16_value);
+         }
+#endif
+         {
+            uint32_t index =
+               (uint32_t)i & (FIXED_MATH_VECTOR_SIZE - 1);
+            radicand[index] =
+               (uint16_t)(1 + ((root_q8_8[index] >> 8) & 0xFF));
+         }
+      }
+
+      capi_gain_bench_status_sink = status;
+      capi_gain_bench_fixed32_sink =
+         (int32_t)root_q8_8[0] +
+         (int32_t)root_q8_8[FIXED_MATH_VECTOR_SIZE - 1] +
+         status;
+      capi_gain_bench_fixed64_sink =
+         (int64_t)capi_gain_bench_fixed32_sink;
+   }
+
+#elif defined(BENCHMARK_QHBLAS_VECTOR_DOT_AH) || \
+      defined(BENCHMARK_NATIVE_INT16_VECTOR_DOT)
+   {
+      static int16_a8_t input_1[FIXED_DOT_VECTOR_SIZE];
+      static int16_a8_t input_2[FIXED_DOT_VECTOR_SIZE];
+      int64_t dot = 0;
+      int32_t status = 0;
+      int32_t seed =
+         (int32_t)((uint64_t)capi_gain_bench_fixed64_sink & 0x1F);
+
+      for (uint32_t element = 0;
+           element < FIXED_DOT_VECTOR_SIZE;
+           element++)
+      {
+         input_1[element] =
+            (int16_t)((int32_t)(element % 31) - 15);
+         input_2[element] =
+            (int16_t)(14 - (int32_t)(element % 29));
+      }
+      input_1[0] = (int16_t)(input_1[0] + seed);
+
+      for (int32_t i = 0; i < BENCH_ITERATIONS; i++)
+      {
+#if defined(BENCHMARK_QHBLAS_VECTOR_DOT_AH)
+         status |= qhblas_h_vector_dot_ah(input_1,
+                                          input_2,
+                                          &dot,
+                                          FIXED_DOT_VECTOR_SIZE);
+#else
+         dot = 0;
+         for (uint32_t element = 0;
+              element < FIXED_DOT_VECTOR_SIZE;
+              element++)
+         {
+            dot += (int64_t)input_1[element] *
+                   (int64_t)input_2[element];
+         }
+         /*
+          * qhblas_h_vector_dot_ah() returns twice the raw int16 product sum.
+          * Apply the same fixed-point scaling so both benchmark paths have
+          * matching results and matching feedback data.
+          */
+         dot *= 2;
+#endif
+         {
+            uint32_t index =
+               (uint32_t)i & (FIXED_DOT_VECTOR_SIZE - 1);
+            int32_t feedback =
+               (int32_t)((uint64_t)dot & 0x7F) - 64;
+            input_1[index] =
+               (int16_t)(((int32_t)input_1[index] + feedback) / 2);
+         }
+      }
+
+      capi_gain_bench_status_sink = status;
+      capi_gain_bench_fixed64_sink = dot;
+      capi_gain_bench_fixed32_sink =
+         (int32_t)((uint64_t)dot & 0x7FFFFFFF) + status;
+   }
+
+#elif defined(BENCHMARK_QHDSP_FIR_AH) || \
+      defined(BENCHMARK_NATIVE_FIXED_FIR)
+   {
+      enum {
+         FIXED_FIR_TAPS = 8,
+         FIXED_FIR_SAMPLES = 8,
+         FIXED_FIR_INPUT_SIZE = FIXED_FIR_TAPS + FIXED_FIR_SAMPLES,
+         FIXED_FIR_NEW_DATA_OFFSET = FIXED_FIR_TAPS - 1
+      };
+      static int16_a8_t fir_input[FIXED_FIR_INPUT_SIZE];
+      static int16_a8_t fir_coefficients[FIXED_FIR_TAPS] = {
+         4096, 4096, 4096, 4096,
+         4096, 4096, 4096, 4096
+      };
+      static int16_a8_t fir_output[FIXED_FIR_SAMPLES];
+      int32_t status = 0;
+      int32_t seed =
+         (int32_t)((uint32_t)capi_gain_bench_fixed32_sink & 0xFF);
+
+      memset(fir_input, 0, sizeof(fir_input));
+      memset(fir_output, 0, sizeof(fir_output));
+      for (uint32_t sample = 0; sample < FIXED_FIR_SAMPLES; sample++)
+      {
+         fir_input[FIXED_FIR_NEW_DATA_OFFSET + sample] =
+            (int16_t)(((int32_t)sample + 1) * 1024);
+      }
+      fir_input[FIXED_FIR_NEW_DATA_OFFSET] =
+         (int16_t)(fir_input[FIXED_FIR_NEW_DATA_OFFSET] + seed);
+
+      for (int32_t i = 0; i < BENCH_ITERATIONS; i++)
+      {
+#if defined(BENCHMARK_QHDSP_FIR_AH)
+         status |= qhdsp_fir_ah(fir_input,
+                                 fir_coefficients,
+                                 FIXED_FIR_TAPS,
+                                 FIXED_FIR_SAMPLES,
+                                 fir_output);
+#else
+         for (uint32_t sample = 0;
+              sample < FIXED_FIR_SAMPLES;
+              sample++)
+         {
+            int64_t accumulator = 0;
+
+            for (uint32_t tap = 0; tap < FIXED_FIR_TAPS; tap++)
+            {
+               accumulator +=
+                  (int64_t)fir_coefficients[tap] *
+                  (int64_t)fir_input[sample + tap];
+            }
+
+            accumulator *= 2;
+            {
+               int32_t saturated;
+
+               if (accumulator > INT32_MAX)
+               {
+                  saturated = INT32_MAX;
+               }
+               else if (accumulator < INT32_MIN)
+               {
+                  saturated = INT32_MIN;
+               }
+               else
+               {
+                  saturated = (int32_t)accumulator;
+               }
+               fir_output[sample] = (int16_t)(saturated >> 16);
+            }
+         }
+
+         memmove(fir_input,
+                 &fir_input[FIXED_FIR_TAPS],
+                 (FIXED_FIR_SAMPLES - 1) * sizeof(int16_t));
+#endif
+         {
+            uint32_t index =
+               (uint32_t)i & (FIXED_FIR_SAMPLES - 1);
+            uint32_t input_index =
+               FIXED_FIR_NEW_DATA_OFFSET + index;
+            fir_input[input_index] =
+               (int16_t)(((int32_t)fir_input[input_index] +
+                          (int32_t)fir_output[index]) /
+                         2);
+         }
+      }
+
+      capi_gain_bench_status_sink = status;
+      capi_gain_bench_fixed32_sink =
+         (int32_t)fir_output[0] +
+         (int32_t)fir_output[FIXED_FIR_SAMPLES - 1] +
+         status;
+      capi_gain_bench_fixed64_sink =
+         (int64_t)capi_gain_bench_fixed32_sink;
+   }
+
+#elif defined(BENCHMARK_QHMATH_SQRT_F) || defined(BENCHMARK_NATIVE_SQRT_F)
+   {
+      float seed = capi_gain_bench_float_sink;
+      float x0;
+      float x1;
+      float x2;
+      float x3;
+      float y0 = 0.0f;
+      float y1 = 0.0f;
+      float y2 = 0.0f;
+      float y3 = 0.0f;
+
+      if ((seed != seed) || (seed > 4.0f) || (seed < -4.0f))
+      {
+         seed = 0.0f;
+      }
+
+      x0 = 0.2501f + seed * 0.000001f;
+      x1 = 0.5003f;
+      x2 = 1.2507f;
+      x3 = 2.0009f;
+
+      for (int32_t i = 0; i < BENCH_ITERATIONS; i++)
+      {
+#if defined(BENCHMARK_QHMATH_SQRT_F)
+         y0 = qhmath_sqrt_f(x0);
+         y1 = qhmath_sqrt_f(x1);
+         y2 = qhmath_sqrt_f(x2);
+         y3 = qhmath_sqrt_f(x3);
+#else
+         y0 = sqrtf(x0);
+         y1 = sqrtf(x1);
+         y2 = sqrtf(x2);
+         y3 = sqrtf(x3);
+#endif
+         /* Small feedback keeps each iteration data-dependent and positive. */
+         x0 = 0.2501f + y0 * 0.000001f;
+         x1 = 0.5003f + y1 * 0.000001f;
+         x2 = 1.2507f + y2 * 0.000001f;
+         x3 = 2.0009f + y3 * 0.000001f;
+      }
+
+      capi_gain_bench_status_sink = 0;
+      capi_gain_bench_float_sink = y0 + y1 + y2 + y3;
+   }
+
+#elif defined(BENCHMARK_QHCOMPLEX_CABS_F) || \
+      defined(BENCHMARK_NATIVE_COMPLEX_CABS_F)
+   {
+      float seed = capi_gain_bench_float_sink;
+      float complex z0;
+      float complex z1;
+      float complex z2;
+      float complex z3;
+      float m0 = 0.0f;
+      float m1 = 0.0f;
+      float m2 = 0.0f;
+      float m3 = 0.0f;
+
+      if ((seed != seed) || (seed > 4.0f) || (seed < -4.0f))
+      {
+         seed = 0.0f;
+      }
+
+      z0 = (0.7501f + seed * 0.000001f) + 0.5001f * I;
+      z1 = 1.0003f - 0.2503f * I;
+      z2 = 1.2507f + 0.8751f * I;
+      z3 = 0.9371f - 0.6257f * I;
+
+      for (int32_t i = 0; i < BENCH_ITERATIONS; i++)
+      {
+#if defined(BENCHMARK_QHCOMPLEX_CABS_F)
+         m0 = qhcomplex_cabs_f(z0);
+         m1 = qhcomplex_cabs_f(z1);
+         m2 = qhcomplex_cabs_f(z2);
+         m3 = qhcomplex_cabs_f(z3);
+#else
+         float re0 = __real__ z0;
+         float im0 = __imag__ z0;
+         float re1 = __real__ z1;
+         float im1 = __imag__ z1;
+         float re2 = __real__ z2;
+         float im2 = __imag__ z2;
+         float re3 = __real__ z3;
+         float im3 = __imag__ z3;
+
+         m0 = sqrtf(re0 * re0 + im0 * im0);
+         m1 = sqrtf(re1 * re1 + im1 * im1);
+         m2 = sqrtf(re2 * re2 + im2 * im2);
+         m3 = sqrtf(re3 * re3 + im3 * im3);
+#endif
+         /* Apply identical bounded feedback in both modes. */
+         __real__ z0 = 0.7501f + m0 * 0.000001f;
+         __imag__ z0 = 0.5001f + m1 * 0.000001f;
+         __real__ z1 = 1.0003f + m1 * 0.000001f;
+         __imag__ z1 = -0.2503f - m2 * 0.000001f;
+         __real__ z2 = 1.2507f + m2 * 0.000001f;
+         __imag__ z2 = 0.8751f + m3 * 0.000001f;
+         __real__ z3 = 0.9371f + m3 * 0.000001f;
+         __imag__ z3 = -0.6257f - m0 * 0.000001f;
+      }
+
+      capi_gain_bench_status_sink = 0;
+      capi_gain_bench_float_sink = m0 + m1 + m2 + m3;
+   }
+
+#elif defined(BENCHMARK_QHBLAS_VECTOR_DOT_F) || \
+      defined(BENCHMARK_NATIVE_VECTOR_DOT_F)
+   {
+      static float_a8_t input_1[QHBLAS_DOT_VECTOR_SIZE];
+      static float_a8_t input_2[QHBLAS_DOT_VECTOR_SIZE];
+      float dot = 0.0f;
+      int32_t status = 0;
+      float seed = capi_gain_bench_float_sink;
+      const float element_step =
+         1.0f / (float)QHBLAS_DOT_VECTOR_SIZE;
+
+      if ((seed != seed) || (seed > 4.0f) || (seed < -4.0f))
+      {
+         seed = 0.0f;
+      }
+
+      /*
+       * Rebuild identical, bounded vectors for every process call.
+       * This keeps the 16/32/64/128-element tests reproducible.
+       */
+      for (uint32_t j = 0; j < QHBLAS_DOT_VECTOR_SIZE; j++)
+      {
+         input_1[j] = (float)(j + 1) * element_step;
+         input_2[j] =
+            (float)(QHBLAS_DOT_VECTOR_SIZE - j) * element_step;
+      }
+      input_1[0] += seed * 0.000001f;
+
+      for (int32_t i = 0; i < BENCH_ITERATIONS; i++)
+      {
+         uint32_t index = (uint32_t)i & (QHBLAS_DOT_VECTOR_SIZE - 1);
+#if defined(BENCHMARK_QHBLAS_VECTOR_DOT_F)
+         status |= qhblas_f_vector_dot_af(input_1,
+                                          input_2,
+                                          &dot,
+                                          QHBLAS_DOT_VECTOR_SIZE);
+#else
+         dot = 0.0f;
+         for (uint32_t j = 0; j < QHBLAS_DOT_VECTOR_SIZE; j++)
+         {
+            dot += input_1[j] * input_2[j];
+         }
+#endif
+         /*
+          * Divide the feedback by the vector length so all four sizes
+          * remain in a comparable numeric range.
+          */
+         input_1[index] =
+            (input_1[index] + dot * element_step) * 0.5f;
+      }
+
+      capi_gain_bench_status_sink = status;
+      capi_gain_bench_float_sink = dot + (float)status;
+   }
+
+#elif defined(BENCHMARK_QHDSP_IIR_F) || defined(BENCHMARK_NATIVE_IIR_F)
+   {
+      enum {
+         QHDSP_IIR_BIQUADS = 1,
+         QHDSP_IIR_SAMPLES = 8
+      };
+      static float input[QHDSP_IIR_SAMPLES] = {
+         0.125f, 0.250f, 0.375f, 0.500f,
+         0.625f, 0.750f, 0.875f, 1.000f
+      };
+      /* Coefficient order required by qhdsp_iir_af: b0, b1, a1, b2, a2. */
+      static const float coefficients[5] = {
+         0.014401f, 0.028803f, -1.632993f, 0.014401f, 0.690599f
+      };
+      static float states[2] __attribute__((aligned(8)));
+      static float result[QHDSP_IIR_SAMPLES];
+      int32_t status = 0;
+      float seed = capi_gain_bench_float_sink;
+
+      if ((seed != seed) || (seed > 4.0f) || (seed < -4.0f))
+      {
+         seed = 0.0f;
+      }
+      input[0] = 0.125f + seed * 0.000001f;
+      memset(states, 0, sizeof(states));
+
+      for (int32_t i = 0; i < BENCH_ITERATIONS; i++)
+      {
+         uint32_t index = (uint32_t)i & (QHDSP_IIR_SAMPLES - 1);
+#if defined(BENCHMARK_QHDSP_IIR_F)
+         status |= qhdsp_iir_af(input,
+                                coefficients,
+                                states,
+                                QHDSP_IIR_BIQUADS,
+                                QHDSP_IIR_SAMPLES,
+                                result);
+#else
+         float s1 = states[0];
+         float s2 = states[1];
+         const float b0 = coefficients[0];
+         const float b1 = coefficients[1];
+         const float a1 = coefficients[2];
+         const float b2 = coefficients[3];
+         const float a2 = coefficients[4];
+
+         for (uint32_t sample = 0; sample < QHDSP_IIR_SAMPLES; sample++)
+         {
+            float x = input[sample];
+            float y = b0 * x + s1;
+
+            result[sample] = y;
+            s1 = s2 + b1 * x - a1 * y;
+            s2 = b2 * x - a2 * y;
+         }
+         states[0] = s1;
+         states[1] = s2;
+#endif
+         input[index] = (input[index] + result[index]) * 0.5f;
+      }
+
+      capi_gain_bench_status_sink = status;
+      capi_gain_bench_float_sink =
+         result[0] + result[QHDSP_IIR_SAMPLES - 1] + (float)status;
+   }
+
+#elif defined(BENCHMARK_QHMATH_DIV_F) || defined(BENCHMARK_NATIVE_DIV_F)
+    {
+      float seed = capi_gain_bench_float_sink;
+
+      if ((seed != seed) || (seed > 4.0f) || (seed < -4.0f))
+      {
+         seed = 0.0f;
+      }
+
+      float x0 = seed + 1.0001f;
+      float x1 = 0.7503f;
+      float x2 = 1.2507f;
+      float x3 = 0.9371f;
+
+      float jitter = seed * 0.0000001f;
+
+      float a0 = 0.999755859375f - jitter; /* Q12 equivalent: 4095 */
+      float a1 = 0.999511718750f - jitter; /* Q12 equivalent: 4094 */
+      float a2 = 0.999267578125f - jitter; /* Q12 equivalent: 4093 */
+      float a3 = 0.999023437500f - jitter; /* Q12 equivalent: 4092 */
+
+      float b0 = 0.000244140625f + jitter; /* Q12 equivalent: 1 */
+      float b1 = 0.000244140625f + jitter; /* Q12 equivalent: 1 */
+      float b2 = 0.000488281250f + jitter; /* Q12 equivalent: 2 */
+      float b3 = 0.000244140625f + jitter; /* Q12 equivalent: 1 */
+
+      float c0 = 0.000244140625f; /* Q12 equivalent: 1 */
+      float c1 = 0.000488281250f; /* Q12 equivalent: 2 */
+      float c2 = 0.000732421875f; /* Q12 equivalent: 3 */
+      float c3 = 0.000976562500f; /* Q12 equivalent: 4 */
+
+      static const volatile float den_lut[4] = {
+         1.000244140625f, /* Q12: 4097 */
+         1.000488281250f, /* Q12: 4098 */
+         1.000732421875f, /* Q12: 4099 */
+         1.000976562500f  /* Q12: 4100 */
+      };
+
+      for (int32_t i = 0; i < BENCH_ITERATIONS; i++)
+      {
+         /* The volatile denominator table keeps every divide data-dependent. */
+         uint32_t idx0 = (uint32_t)i & 0x3;
+         uint32_t idx1 = (idx0 + 1) & 0x3;
+         uint32_t idx2 = (idx0 + 2) & 0x3;
+         uint32_t idx3 = (idx0 + 3) & 0x3;
+
+#if defined(BENCHMARK_QHMATH_DIV_F)
+         x0 = qhmath_div_f((x0 * a0) + (x1 * b0) + c0, den_lut[idx0]);
+         x1 = qhmath_div_f((x1 * a1) - (x0 * b1) + c1, den_lut[idx1]);
+         x2 = qhmath_div_f((x2 * a2) + (x1 * b2) + c2, den_lut[idx2]);
+         x3 = qhmath_div_f((x3 * a3) - (x2 * b3) + c3, den_lut[idx3]);
+#else
+         x0 = ((x0 * a0) + (x1 * b0) + c0) / den_lut[idx0];
+         x1 = ((x1 * a1) - (x0 * b1) + c1) / den_lut[idx1];
+         x2 = ((x2 * a2) + (x1 * b2) + c2) / den_lut[idx2];
+         x3 = ((x3 * a3) - (x2 * b3) + c3) / den_lut[idx3];
+#endif
+      }
+
+      capi_gain_bench_float_sink = x0 + x1 + x2 + x3 + a0 + a1 + a2 + a3;
+}
+
+#elif defined(BENCHMARK_QHCOMPLEX_CONJ_F) || \
+      defined(BENCHMARK_NATIVE_COMPLEX_CONJ_F)
+   {
+      float seed = capi_gain_bench_float_sink; //将上一次计算的结果传递过来 避免编译器判定为同一组数据
+
+      if ((seed != seed) || (seed > 4.0f) || (seed < -4.0f))//异常保护
+      {
+         seed = 0.0f;
+      }
+
+      volatile float complex z0 = //单精度浮点复数
+         (1.0001f + seed * 0.000001f) + 0.5001f * I;
+      volatile float complex z1 = 0.7503f - 0.2503f * I;//volatile 避免删除全部循环
+      volatile float complex z2 = 1.2507f + 0.8751f * I;
+      volatile float complex z3 = 0.9371f - 0.6257f * I;
+
+      for (int32_t i = 0; i < BENCH_ITERATIONS; i++)
+      {
+#if defined(BENCHMARK_QHCOMPLEX_CONJ_F)
+         z0 = qhcomplex_conj_f(z0);
+         z1 = qhcomplex_conj_f(z1);
+         z2 = qhcomplex_conj_f(z2);
+         z3 = qhcomplex_conj_f(z3);
+#else
+         __imag__ z0 = -__imag__ z0;
+         __imag__ z1 = -__imag__ z1;
+         __imag__ z2 = -__imag__ z2;
+         __imag__ z3 = -__imag__ z3;
+#endif
+      }
+
+      capi_gain_bench_float_sink =
+         __real__ z0 + __imag__ z0 +
+         __real__ z1 + __imag__ z1 +
+         __real__ z2 + __imag__ z2 +
+         __real__ z3 + __imag__ z3;
+      capi_gain_bench_status_sink = 0;
+   }
+
+#elif defined(BENCHMARK_QHBLAS_VECTOR_ADD_F) || \
+      defined(BENCHMARK_NATIVE_VECTOR_ADD_F)
+   {
+      enum { QHBLAS_BENCH_VECTOR_SIZE = 8 };
+      static float_a8_t input_1[QHBLAS_BENCH_VECTOR_SIZE] = {
+         0.125f, 0.250f, 0.375f, 0.500f,
+         0.625f, 0.750f, 0.875f, 1.000f
+      };
+      static float_a8_t input_2[QHBLAS_BENCH_VECTOR_SIZE] = {
+         1.000f, 0.875f, 0.750f, 0.625f,
+         0.500f, 0.375f, 0.250f, 0.125f
+      };
+      static float_a8_t result[QHBLAS_BENCH_VECTOR_SIZE];
+      int32_t status = 0;
+      float seed = capi_gain_bench_float_sink;
+
+      if ((seed != seed) || (seed > 4.0f) || (seed < -4.0f))
+      {
+         seed = 0.0f;
+      }
+      input_1[0] = 0.125f + seed * 0.000001f;
+
+      for (int32_t i = 0; i < BENCH_ITERATIONS; i++)
+      {
+         uint32_t index = (uint32_t)i & (QHBLAS_BENCH_VECTOR_SIZE - 1);
+#if defined(BENCHMARK_QHBLAS_VECTOR_ADD_F)
+         status |= qhblas_vector_add_af(input_1,
+                                        input_2,
+                                        result,
+                                        QHBLAS_BENCH_VECTOR_SIZE);
+#else
+         for (uint32_t j = 0; j < QHBLAS_BENCH_VECTOR_SIZE; j++)
+         {
+            result[j] = input_1[j] + input_2[j];
+         }
+#endif
+         input_1[index] = result[index] * 0.5f;
+      }
+
+      capi_gain_bench_status_sink = status;
+      capi_gain_bench_float_sink =
+         result[0] + result[QHBLAS_BENCH_VECTOR_SIZE - 1] + (float)status;
+   }
+
+#elif defined(BENCHMARK_QHDSP_FIR_F) || defined(BENCHMARK_NATIVE_FIR_F)//FIR 滤波测试
+   {
+      enum {
+         QHDSP_BENCH_TAPS = 8,
+         QHDSP_BENCH_SAMPLES = 8,
+         QHDSP_BENCH_DELAY_SIZE = QHDSP_BENCH_TAPS + QHDSP_BENCH_SAMPLES - 1
+      };//输入数据
+      static float input[QHDSP_BENCH_SAMPLES] = {//输入数据
+         0.125f, 0.250f, 0.375f, 0.500f,
+         0.625f, 0.750f, 0.875f, 1.000f
+      };
+      static const float coefficients[QHDSP_BENCH_TAPS] = {//滤波系数
+         0.050f, 0.100f, 0.150f, 0.200f,
+         0.200f, 0.150f, 0.100f, 0.050f
+      };
+      static float delay_line[QHDSP_BENCH_DELAY_SIZE];
+      static float_a8_t result[QHDSP_BENCH_SAMPLES];
+      int32_t status = 0;
+      float seed = capi_gain_bench_float_sink;
+      
+      if ((seed != seed) || (seed > 4.0f) || (seed < -4.0f))//避免反馈数据异常增大
+      {
+         seed = 0.0f;
+      }
+      input[0] = 0.125f + seed * 0.000001f;
+      memset(delay_line, 0, sizeof(delay_line));
+
+      for (int32_t i = 0; i < BENCH_ITERATIONS; i++)
+      {
+         uint32_t index = (uint32_t)i & (QHDSP_BENCH_SAMPLES - 1);//index 每次变换 一次数字 0 1 2...
+#if defined(BENCHMARK_QHDSP_FIR_F)//库函数
+         status |= qhdsp_fir_af(input,
+                                delay_line,
+                                coefficients,
+                                QHDSP_BENCH_TAPS,
+                                QHDSP_BENCH_SAMPLES,
+                                result);
+#else
+         for (uint32_t sample = 0;
+              sample < QHDSP_BENCH_SAMPLES;
+              sample++)
+         {
+            float sum = 0.0f;
+
+            memmove(&delay_line[1],
+                    &delay_line[0],
+                    (QHDSP_BENCH_TAPS - 1) * sizeof(float));
+            delay_line[0] = input[sample];
+
+            for (uint32_t tap = 0; tap < QHDSP_BENCH_TAPS; tap++)
+            {
+               sum += coefficients[tap] * delay_line[tap];
+            }
+
+            result[sample] = sum;
+         }
+#endif
+         input[index] = (input[index] + result[index]) * 0.5f; //更新输入 + 结果的一半 
+         //index 循环变化 0 1 2 3 4...
+      }
+
+      capi_gain_bench_status_sink = status;
+      capi_gain_bench_float_sink =
+         result[0] + result[QHDSP_BENCH_SAMPLES - 1] + (float)status;
+   }
+
+#elif defined(BENCHMARK_FIXED_RECIP_Q12)
+    {
+      int32_t seed = (int32_t)((uint32_t)capi_gain_bench_fixed_sink & 0x3FF);
+      int32_t x0 = seed + 4096;        /* Q12: 1.0 plus bounded seed */
+      int32_t x1 = 3072 + (seed >> 1); /* Q12: 0.75 plus bounded seed */
+      int32_t x2 = 5120;               /* Q12: 1.25 */
+      int32_t x3 = 3840;               /* Q12: 0.9375 */
+
+      int32_t jitter = seed & 0x1;
+      
+      int32_t a0 = 4095 - jitter;      /* Q12 equivalent: 0.999755859375 */
+      int32_t a1 = 4094 - jitter;      /* Q12 equivalent: 0.999511718750 */
+      int32_t a2 = 4093 - jitter;      /* Q12 equivalent: 0.999267578125 */
+      int32_t a3 = 4092 - jitter;      /* Q12 equivalent: 0.999023437500 */
+
+      int32_t b0 = 1 + jitter;         /* Q12 equivalent: 0.000244140625 */
+      int32_t b1 = 1 + jitter;         /* Q12 equivalent: 0.000244140625 */
+      int32_t b2 = 2 + jitter;         /* Q12 equivalent: 0.000488281250 */
+      int32_t b3 = 1 + jitter;         /* Q12 equivalent: 0.000244140625 */
+
+      int32_t c0 = 1;
+      int32_t c1 = 2;
+      int32_t c2 = 3;
+      int32_t c3 = 4;
+
+      static const volatile int32_t recip_lut_q12[4] = {
+         4095, /* reciprocal of Q12 4097, rounded Q12 */
+         4094, /* reciprocal of Q12 4098, rounded Q12 */
+         4093, /* reciprocal of Q12 4099, rounded Q12 */
+         4092  /* reciprocal of Q12 4100, rounded Q12 */
+      };
+
+      for (int32_t i = 0; i < BENCH_ITERATIONS; i++)
+      {
+         /*
+          * Fixed reciprocal-multiply path:
+          *   Q12 divide by den ~= Q12 multiply by reciprocal(den).
+          * No integer divide is used inside the loop.
+          */
+         uint32_t idx0 = (uint32_t)i & 0x3;
+         uint32_t idx1 = (idx0 + 1) & 0x3;
+         uint32_t idx2 = (idx0 + 2) & 0x3;
+         uint32_t idx3 = (idx0 + 3) & 0x3;
+
+         int32_t num0 =
+            ((x0 * a0) >> 12) + ((x1 * b0) >> 12) + c0;
+
+         x0 = (num0 * recip_lut_q12[idx0]) >> 12;
+
+         int32_t num1 =
+            ((x1 * a1) >> 12) - ((x0 * b1) >> 12) + c1;
+
+         x1 = (num1 * recip_lut_q12[idx1]) >> 12;
+
+         int32_t num2 =
+            ((x2 * a2) >> 12) + ((x1 * b2) >> 12) + c2;
+
+         x2 = (num2 * recip_lut_q12[idx2]) >> 12;
+
+         int32_t num3 =
+            ((x3 * a3) >> 12) - ((x2 * b3) >> 12) + c3;
+
+         x3 = (num3 * recip_lut_q12[idx3]) >> 12;
+      }
+
+      capi_gain_bench_fixed_sink = x0 + x1 + x2 + x3 + a0 + a1 + a2 + a3;
+    }
+
+#elif defined(BENCHMARK_IDLE)
+   {
+      /* IDLE 模式不做任何 benchmark 计算。 */
+   }
+#endif
+
+   /* 音频 pass-through */
+   if ((NULL != me_ptr) &&
+       (NULL != input) &&
+       (NULL != output) &&
+       (NULL != input[0]) &&
+       (NULL != output[0]) &&
+       (NULL != input[0]->buf_ptr) &&
+       (NULL != output[0]->buf_ptr))
+   {
+      uint32_t num_channels =
+         me_ptr->operating_media_fmt.format.num_channels;
+
+      for (uint32_t ch = 0; ch < num_channels; ch++)
+      {
+         capi_buf_t *in_buf_ptr  = &input[0]->buf_ptr[ch];
+         capi_buf_t *out_buf_ptr = &output[0]->buf_ptr[ch];
+
+         uint32_t in_bytes  = in_buf_ptr->actual_data_len;
+         uint32_t out_bytes = out_buf_ptr->max_data_len;
+         uint32_t bytes     = (in_bytes < out_bytes) ? in_bytes : out_bytes;
+
+         if ((NULL != in_buf_ptr->data_ptr) &&
+             (NULL != out_buf_ptr->data_ptr) &&
+             (bytes > 0))
+         {
+            memcpy(out_buf_ptr->data_ptr,
+                   in_buf_ptr->data_ptr,
+                   bytes);
+         }
+
+         out_buf_ptr->actual_data_len = bytes;
+      }
+
+      output[0]->flags     = input[0]->flags;
+      output[0]->timestamp = input[0]->timestamp;
+   }
+}
+
+#endif  /* CAPI_GAIN_BENCHMARK_ENABLED */
+
+/* -------------------------------------------------------------------------
+ * Function name: capi_gain_process
+ * -------------------------------------------------------------------------*/
+static capi_err_t capi_gain_process(capi_t *_pif,
+                                    capi_stream_data_t *input[],
+                                    capi_stream_data_t *output[])
+{
+   capi_err_t capi_result = CAPI_EOK;
+
+   if ((NULL == _pif) ||
+       (NULL == input) ||
+       (NULL == output) ||
+       (NULL == input[0]) ||
+       (NULL == output[0]) ||
+       (NULL == input[0]->buf_ptr) ||
+       (NULL == output[0]->buf_ptr))
+   {
+      AR_MSG(DBG_ERROR_PRIO,
+             "CAPI GAIN: Process: invalid input/output buffer");
+      return CAPI_EFAILED;
+   }
+
+   capi_gain_t *me_ptr = (capi_gain_t *)_pif;
+
+#ifdef CAPI_GAIN_BENCHMARK_ENABLED
+   capi_gain_run_benchmark(me_ptr, input, output);
+   return CAPI_EOK;
+#endif
+
+   uint32_t samples_to_process;
+
+   int32_t byte_sample_convert =
+      (BIT_WIDTH_16 == me_ptr->operating_media_fmt.format.bits_per_sample)
+         ? 1
+         : 2;
+
+   int32_t inp_samples =
+      input[0]->buf_ptr[0].actual_data_len >> byte_sample_convert;
+
+   int32_t out_samples =
+      output[0]->buf_ptr[0].max_data_len >> byte_sample_convert;
+
+   samples_to_process =
+      (inp_samples < out_samples) ? inp_samples : out_samples;
+
+   for (uint32_t ch = 0;
+        ch < me_ptr->operating_media_fmt.format.num_channels;
+        ch++)
+   {
+      if ((NULL == input[0]->buf_ptr[ch].data_ptr) ||
+          (NULL == output[0]->buf_ptr[ch].data_ptr))
+      {
+         AR_MSG(DBG_ERROR_PRIO,
+                "CAPI GAIN: Process: NULL data_ptr at ch=%lu",
+                (uint32_t)ch);
+         return CAPI_EFAILED;
+      }
+
+      if (BIT_WIDTH_16 ==
+          me_ptr->operating_media_fmt.format.bits_per_sample)
+      {
+         example_apply_gain_16((int16_t *)output[0]->buf_ptr[ch].data_ptr,
+                               (int16_t *)input[0]->buf_ptr[ch].data_ptr,
+                               me_ptr->gain_config.gain_q12,
+                               samples_to_process);
+
+         output[0]->buf_ptr[ch].actual_data_len =
+            samples_to_process << 1;
+
+         input[0]->buf_ptr[ch].actual_data_len =
+            samples_to_process << 1;
+      }
+      else
+      {
+         if ((uint16_t)(me_ptr->gain_config.gain_q12 >> 12) > 0)
+         {
+            example_apply_gain_32_G1((int32_t *)output[0]->buf_ptr[ch].data_ptr,
+                                     (int32_t *)input[0]->buf_ptr[ch].data_ptr,
+                                     me_ptr->gain_config.gain_q12,
+                                     samples_to_process,
+                                     me_ptr->operating_media_fmt.format.q_factor);
+         }
+         else
+         {
+            example_apply_gain_32_L1((int32_t *)output[0]->buf_ptr[ch].data_ptr,
+                                     (int32_t *)input[0]->buf_ptr[ch].data_ptr,
+                                     me_ptr->gain_config.gain_q12,
+                                     samples_to_process,
+                                     me_ptr->operating_media_fmt.format.q_factor);
+         }
+
+         output[0]->buf_ptr[ch].actual_data_len =
+            samples_to_process << 2;
+
+         input[0]->buf_ptr[ch].actual_data_len =
+            samples_to_process << 2;
+      }
+   }
+
+   if (samples_to_process)
+   {
+      output[0]->flags = input[0]->flags;
+
+      if (input[0]->flags.is_timestamp_valid)
+      {
+         output[0]->timestamp =
+            input[0]->timestamp - me_ptr->events_info.delay_in_us;
+      }
+   }
+
+   return capi_result;
+}
+
+/*------------------------------------------------------------------------
+ * Function name: capi_gain_end
+ * -----------------------------------------------------------------------*/
+static capi_err_t capi_gain_end(capi_t *_pif)
+{
+   capi_err_t capi_result = CAPI_EOK;
+
+   if (NULL == _pif)
+   {
+      CAPI_SET_ERROR(capi_result, CAPI_EBADPARAM);
+      return capi_result;
+   }
+
+   capi_gain_t *me_ptr = (capi_gain_t *)_pif;
+
+   AR_MSG(DBG_HIGH_PRIO,
+          "CAPI GAIN: End - final gain_q12=0x%04X, gain_q13=0x%04X, enable=%lu",
+          me_ptr->gain_config.gain_q12,
+          me_ptr->gain_config.gain_q13,
+          (uint32_t)me_ptr->gain_config.enable);
+
+#ifdef CAPI_GAIN_BENCHMARK_ENABLED
+   {
+      uint32_t total_iter_lsw =
+         (uint32_t)(capi_gain_bench_total_iterations & 0xFFFFFFFF);
+
+      uint32_t total_iter_msw =
+         (uint32_t)((capi_gain_bench_total_iterations >> 32) & 0xFFFFFFFF);
+
+      AR_MSG(DBG_HIGH_PRIO,
+             "CAPI BENCH: summary - process_count=%lu, total_iterations_msw=0x%08lX, total_iterations_lsw=0x%08lX",
+             (uint32_t)capi_gain_bench_process_count,
+             total_iter_msw,
+             total_iter_lsw);
+   }
+#endif
+
+#ifdef CAPI_GAIN_FLOAT_BENCHMARK
+   {
+      int32_t sink_x1000 =
+         (int32_t)(capi_gain_bench_float_sink * 1000.0f);
+
+      AR_MSG(DBG_HIGH_PRIO,
+             "CAPI BENCH: float sink_x1000=%ld, status=%ld",
+             sink_x1000,
+             (int32_t)capi_gain_bench_status_sink);
+   }
+#endif
+
+#ifdef CAPI_GAIN_FIXED_FORMAT_BENCHMARK
+   {
+      uint32_t fixed64_lsw =
+         (uint32_t)((uint64_t)capi_gain_bench_fixed64_sink & 0xFFFFFFFF);
+      uint32_t fixed64_msw =
+         (uint32_t)(((uint64_t)capi_gain_bench_fixed64_sink >> 32) &
+                    0xFFFFFFFF);
+
+      AR_MSG(DBG_HIGH_PRIO,
+             "CAPI BENCH: fixed sink32=%ld, sink64_msw=0x%08lX, sink64_lsw=0x%08lX, status=%ld",
+             (int32_t)capi_gain_bench_fixed32_sink,
+             fixed64_msw,
+             fixed64_lsw,
+             (int32_t)capi_gain_bench_status_sink);
+   }
+#endif
+
+#ifdef BENCHMARK_FIXED_RECIP_Q12
+   {
+      AR_MSG(DBG_HIGH_PRIO,
+             "CAPI BENCH: fixed sink=0x%08lX",
+             (uint32_t)capi_gain_bench_fixed_sink);
+   }
+#endif
+
+   me_ptr->vtbl.vtbl_ptr = NULL;
+
+   AR_MSG(DBG_HIGH_PRIO,
+          "CAPI GAIN: End done");
+
+   return capi_result;
+}
+
+/* -------------------------------------------------------------------------
+ * Function name: capi_gain_set_param
+ * -------------------------------------------------------------------------*/
+static capi_err_t capi_gain_set_param(capi_t *                _pif,
+                                      uint32_t                param_id,
+                                      const capi_port_info_t *port_info_ptr,
+                                      capi_buf_t *            params_ptr)
+{
+   capi_err_t capi_result = CAPI_EOK;
+
+   if (NULL == _pif || NULL == params_ptr)
+   {
+      AR_MSG(DBG_ERROR_PRIO,
+             "CAPI GAIN: Set param - NULL pointer");
+      return CAPI_EBADPARAM;
+   }
+
+   capi_gain_t *me_ptr = (capi_gain_t *)(_pif);
+
+   AR_MSG(DBG_HIGH_PRIO,
+          "CAPI GAIN: Set param request - param_id=0x%08X, data_len=%lu",
+          param_id,
+          params_ptr->actual_data_len);
+
+   switch (param_id)
+   {
+      case PARAM_ID_MODULE_ENABLE:
+      {
+         if (params_ptr->actual_data_len >=
+             sizeof(param_id_module_enable_t))
+         {
+            param_id_module_enable_t *gain_module_enable_ptr =
+               (param_id_module_enable_t *)(params_ptr->data_ptr);
+
+            AR_MSG(DBG_HIGH_PRIO,
+                   "CAPI GAIN: Set ENABLE - old=%lu, new=%lu",
+                   (uint32_t)me_ptr->gain_config.enable,
+                   (uint32_t)gain_module_enable_ptr->enable);
+
+            me_ptr->gain_config.enable =
+               gain_module_enable_ptr->enable;
+
+#ifdef CAPI_GAIN_BENCHMARK_ENABLED
+            /* 关键修改：
+             * benchmark 模式下，即使外部 set enable=0，
+             * 也强制让 framework 调用 process。
+             */
+            AR_MSG(DBG_HIGH_PRIO,
+                   "CAPI GAIN: Benchmark mode - force process event enable=1 from MODULE_ENABLE");
+
+            capi_result |= capi_gain_raise_process_event(me_ptr, TRUE);
+#else
+            capi_result |=
+               capi_gain_raise_process_event(me_ptr,
+                                             me_ptr->gain_config.enable);
+#endif
+         }
+         else
+         {
+            AR_MSG(DBG_ERROR_PRIO,
+                   "CAPI GAIN: Set ENABLE - Bad param size %lu, expected %lu",
+                   params_ptr->actual_data_len,
+                   (uint32_t)sizeof(param_id_module_enable_t));
+
+            capi_result |= CAPI_ENEEDMORE;
+         }
+         break;
+      }
+
+      case PARAM_ID_GAIN_MODULE_GAIN:
+      {
+         if (params_ptr->actual_data_len >=
+             sizeof(param_id_module_gain_cfg_t))
+         {
+            param_id_module_gain_cfg_t *gain_cfg_ptr =
+               (param_id_module_gain_cfg_t *)(params_ptr->data_ptr);
+
+            AR_MSG(DBG_HIGH_PRIO,
+                   "CAPI GAIN: Set GAIN - old_q13=0x%04X old_q12=0x%04X, new_q13=0x%04X new_q12=0x%04X",
+                   me_ptr->gain_config.gain_q13,
+                   me_ptr->gain_config.gain_q12,
+                   gain_cfg_ptr->gain,
+                   gain_cfg_ptr->gain >> 1);
+
+            me_ptr->gain_config.gain_q13 = gain_cfg_ptr->gain;
+            me_ptr->gain_config.gain_q12 = gain_cfg_ptr->gain >> 1;
+
+#ifdef CAPI_GAIN_BENCHMARK_ENABLED
+            /* 关键修改：
+             * 正常 Gain 模式下，unity gain 会 computed enable=0。
+             * 但 benchmark 模式下必须强制 enable process，
+             * 否则 process_count 会一直是 0。
+             */
+            AR_MSG(DBG_HIGH_PRIO,
+                   "CAPI GAIN: Benchmark mode - force process event enable=1 from GAIN");
+
+            capi_result |= capi_gain_raise_process_event(me_ptr, TRUE);
+#else
+            uint32_t enable = TRUE;
+
+            if (Q13_UNITY_GAIN ==
+                (me_ptr->gain_config.gain_q12 << 1))
+            {
+               enable = FALSE;
+            }
+
+            enable =
+               enable && ((me_ptr->gain_config.enable == 0) ? 0 : 1);
+
+            AR_MSG(DBG_HIGH_PRIO,
+                   "CAPI GAIN: Set GAIN - computed enable=%lu",
+                   enable);
+
+            capi_result |=
+               capi_gain_raise_process_event(me_ptr, enable);
+#endif
+         }
+         else
+         {
+            AR_MSG(DBG_ERROR_PRIO,
+                   "CAPI GAIN: Set GAIN - Bad param size %lu, expected %lu",
+                   params_ptr->actual_data_len,
+                   (uint32_t)sizeof(param_id_module_gain_cfg_t));
+
+            capi_result |= CAPI_ENEEDMORE;
+         }
+         break;
+      }
+
+      default:
+      {
+         AR_MSG(DBG_ERROR_PRIO,
+                "CAPI GAIN: Set param - unsupported param_id=0x%08X",
+                param_id);
+
+         CAPI_SET_ERROR(capi_result, CAPI_EUNSUPPORTED);
+         break;
+      }
+   }
+
+   return capi_result;
+}
+
+/* -------------------------------------------------------------------------
+ * Function name: capi_gain_get_param
+ * -------------------------------------------------------------------------*/
+static capi_err_t capi_gain_get_param(capi_t *                _pif,
+                                      uint32_t                param_id,
+                                      const capi_port_info_t *port_info_ptr,
+                                      capi_buf_t *            params_ptr)
+{
+   capi_err_t capi_result = CAPI_EOK;
+
+   if (NULL == _pif || NULL == params_ptr)
+   {
+      AR_MSG(DBG_ERROR_PRIO,
+             "CAPI GAIN: Get param - NULL pointer, param_id=0x%08X",
+             param_id);
+      return CAPI_EBADPARAM;
+   }
+
+   capi_gain_t *me_ptr = (capi_gain_t *)_pif;
+
+   switch (param_id)
+   {
+      case PARAM_ID_MODULE_ENABLE:
+      {
+         if (params_ptr->max_data_len >=
+             sizeof(param_id_module_enable_t))
+         {
+            param_id_module_enable_t *enable_ptr =
+               (param_id_module_enable_t *)(params_ptr->data_ptr);
+
+            enable_ptr->enable = me_ptr->gain_config.enable;
+
+            params_ptr->actual_data_len =
+               (uint32_t)sizeof(param_id_module_enable_t);
+
+            AR_MSG(DBG_HIGH_PRIO,
+                   "CAPI GAIN: Get ENABLE - enable=%lu",
+                   (uint32_t)enable_ptr->enable);
+         }
+         else
+         {
+            AR_MSG(DBG_ERROR_PRIO,
+                   "CAPI GAIN: Get ENABLE - Bad payload size %lu, expected %lu",
+                   params_ptr->max_data_len,
+                   (uint32_t)sizeof(param_id_module_enable_t));
+
+            capi_result = CAPI_ENEEDMORE;
+         }
+         break;
+      }
+
+      case PARAM_ID_GAIN_MODULE_GAIN:
+      {
+         if (params_ptr->max_data_len >=
+             sizeof(param_id_module_gain_cfg_t))
+         {
+            param_id_module_gain_cfg_t *gain_cfg_ptr =
+               (param_id_module_gain_cfg_t *)(params_ptr->data_ptr);
+
+            gain_cfg_ptr->gain     = me_ptr->gain_config.gain_q13;
+            gain_cfg_ptr->reserved = 0;
+
+            params_ptr->actual_data_len =
+               (uint32_t)sizeof(param_id_module_gain_cfg_t);
+
+            AR_MSG(DBG_HIGH_PRIO,
+                   "CAPI GAIN: Get GAIN - gain_q13=0x%04X",
+                   gain_cfg_ptr->gain);
+         }
+         else
+         {
+            AR_MSG(DBG_ERROR_PRIO,
+                   "CAPI GAIN: Get GAIN - Bad param size %lu, expected %lu",
+                   params_ptr->max_data_len,
+                   (uint32_t)sizeof(param_id_module_gain_cfg_t));
+
+            capi_result = CAPI_ENEEDMORE;
+         }
+         break;
+      }
+
+      default:
+      {
+         AR_MSG(DBG_ERROR_PRIO,
+                "CAPI GAIN: Get param - unsupported param_id=0x%08X",
+                param_id);
+
+         capi_result |= CAPI_EUNSUPPORTED;
+         break;
+      }
+   }
+
+   return capi_result;
+}
+
+/* -------------------------------------------------------------------------
+ * Function name: capi_gain_set_properties
+ * -------------------------------------------------------------------------*/
+static capi_err_t capi_gain_set_properties(capi_t *_pif,
+                                           capi_proplist_t *props_ptr)
+{
+   capi_err_t capi_result = CAPI_EOK;
+
+   if (NULL == _pif)
+   {
+      AR_MSG(DBG_ERROR_PRIO,
+             "CAPI GAIN: Set properties - NULL module pointer");
+      return CAPI_EBADPARAM;
+   }
+
+   capi_gain_t *me_ptr = (capi_gain_t *)_pif;
+
+   capi_result = capi_gain_process_set_properties(me_ptr, props_ptr);
+
+#ifdef CAPI_GAIN_BENCHMARK_ENABLED
+   if (!CAPI_FAILED(capi_result))
+   {
+      AR_MSG(DBG_HIGH_PRIO,
+             "CAPI GAIN: Benchmark mode - force process event enable=1 from set_properties");
+
+      capi_result |= capi_gain_raise_process_event(me_ptr, TRUE);
+   }
+#endif
+
+   return capi_result;
+}
+
+/* -------------------------------------------------------------------------
+ * Function name: capi_gain_get_properties
+ * -------------------------------------------------------------------------*/
+static capi_err_t capi_gain_get_properties(capi_t *_pif,
+                                           capi_proplist_t *props_ptr)
+{
+   if (NULL == _pif)
+   {
+      AR_MSG(DBG_ERROR_PRIO,
+             "CAPI GAIN: Get properties - NULL module pointer");
+      return CAPI_EBADPARAM;
+   }
+
+   capi_gain_t *me_ptr = (capi_gain_t *)_pif;
+
+   return capi_gain_process_get_properties(me_ptr, props_ptr);
+}

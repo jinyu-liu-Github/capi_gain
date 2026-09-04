@@ -1,0 +1,689 @@
+# Linker from QuIC LLVM Hexagon Clang version Version 8.7.06
+# Linker based on LLVM version: 15.0
+# Notable linker command/script options:
+# CPU Architecture Version: hexagonv73
+# Target triple environment for the link: unknown
+# Maximum GP size: 0
+# Link type: Dynamic and Bsymbolic set
+# ABI Page Size: 0x1000
+# CommandLine : C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin\hexagon-link --hash-style=sysv -march=hexagon -mcpu=hexagonv73 -shared -call_shared -G0 -o hexagon_Debug_toolv87_v73/capi_gain.so C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin/../target/hexagon/lib/v73/G0/pic/initS.o -LC:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin/../target/hexagon/lib/v73/G0/pic -LC:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin/../target/hexagon/lib/v73/G0 -LC:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin/../target/hexagon/lib/v73 -LC:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin/../target/hexagon/lib --defsym=ISDB_TRUSTED_FLAG=2 --defsym=ISDB_SECURE_FLAG=2 --no-threads -Bsymbolic --wrap=malloc --wrap=calloc --wrap=free --wrap=realloc --wrap=memalign -lc -Map=hexagon_Debug_toolv87_v73/capi_gain.so.map -soname=capi_gain.so --start-group hexagon_Debug_toolv87_v73/capi_gain.o hexagon_Debug_toolv87_v73/capi_gain_utils.o hexagon_Debug_toolv87_v73/gain_lib.o hexagon_Debug_toolv87_v73/version_shared_lib.o C:/Qualcomm/Hexagon_SDK/5.5.6.0/libs/qhl/prebuilt/hexagon_toolv87_v73/libqhdsp.a C:/Qualcomm/Hexagon_SDK/5.5.6.0/libs/qhl/prebuilt/hexagon_toolv87_v73/libqhcomplex.a C:/Qualcomm/Hexagon_SDK/5.5.6.0/libs/qhl/prebuilt/hexagon_toolv87_v73/libqhmath.a C:/Qualcomm/Hexagon_SDK/5.5.6.0/libs/qhl/prebuilt/hexagon_toolv87_v73/libqhblas.a --end-group --start-group -lgcc --end-group C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin/../target/hexagon/lib/v73/G0/pic/finiS.o 
+# LinkStats Begin
+# ObjectFiles : 6
+# LinkerScripts : 4
+# SharedObjects : 2
+# ArchiveFiles : 4
+# GroupTraversals : 6
+# ZeroSizedSections : 30
+# NumOutputSections : 30
+# NumOrphans : 21
+# LinkStats End
+# Is file header loaded: true
+# Is PHDRS loaded: true
+
+Linker Script and memory map
+LOAD C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin/../target/hexagon/lib/v73/G0/pic/initS.o[hexagonv73]
+LOAD C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin/../target/hexagon/lib/v73/G0/pic/libc.so[hexagonv73]
+START GROUP
+LOAD hexagon_Debug_toolv87_v73/capi_gain.o[hexagonv73]
+LOAD hexagon_Debug_toolv87_v73/capi_gain_utils.o[hexagonv73]
+LOAD hexagon_Debug_toolv87_v73/gain_lib.o[hexagonv73]
+LOAD hexagon_Debug_toolv87_v73/version_shared_lib.o[hexagonv73]
+END GROUP
+START GROUP
+LOAD C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin/../target/hexagon/lib/v73/G0/pic/libgcc.so[hexagonv73]
+END GROUP
+LOAD C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin/../target/hexagon/lib/v73/G0/pic/finiS.o[hexagonv73]
+
+Build Statistics
+# <file> <start time> <duration>
+
+
+Linker scripts used (including INCLUDE command)
+Expression(Defsym)ISDB_TRUSTED_FLAG=2
+Expression(Defsym)ISDB_SECURE_FLAG=2
+Linker Plugin Information
+Linker Plugin Run Information
+
+# Output Section and Layout 
+ISDB_TRUSTED_FLAG(0x2) = 0x2;
+ISDB_SECURE_FLAG(0x2) = 0x2;
+
+.note.lib.ver	0x1000	0x70 # Offset: 0x1000, LMA: 0x1000, Alignment: 0x1000, Flags: SHF_ALLOC
+*(.note.lib.ver) #Rule 9, Internal-LinkerScript (Implicit rule inserted by Linker) [0:0]
+.note.lib.ver	0x1000	0x70	hexagon_Debug_toolv87_v73/version_shared_lib.o	#SHT_NOTE,SHF_ALLOC,4096
+	0x1000		so_ver
+
+.dynsym	0x1070	0x1d0 # Offset: 0x1070, LMA: 0x1070, Alignment: 0x4, Flags: SHF_ALLOC
+
+.dynstr	0x1240	0x226 # Offset: 0x1240, LMA: 0x1240, Alignment: 0x1, Flags: SHF_ALLOC
+
+.hash	0x1468	0xf0 # Offset: 0x1468, LMA: 0x1468, Alignment: 0x4, Flags: SHF_ALLOC
+*(.hash) #Rule 10, Internal-LinkerScript (Implicit rule inserted by Linker) [0:0]
+
+.rela.dyn	0x1558	0x78 # Offset: 0x1558, LMA: 0x1558, Alignment: 0x4, Flags: SHF_ALLOC
+
+.rela.plt	0x15d0	0x84 # Offset: 0x15d0, LMA: 0x15d0, Alignment: 0x4, Flags: SHF_ALLOC
+
+.init	0x1660	0x6c # Offset: 0x1660, LMA: 0x1660, Alignment: 0x20, Flags: SHF_ALLOC|SHF_EXECINSTR
+.init	0x1660	0x6c	C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin/../target/hexagon/lib/v73/G0/pic/initS.o	#SHT_PROGBITS,SHF_ALLOC|SHF_EXECINSTR,32
+	0x1660		_init
+
+.plt	0x16d0	0xe0 # Offset: 0x16d0, LMA: 0x16d0, Alignment: 0x10, Flags: SHF_ALLOC|SHF_EXECINSTR
+*(.plt) #Rule 13, Internal-LinkerScript (Implicit rule inserted by Linker) [0:0]
+
+.text	0x17c0	0x4ec4 # Offset: 0x17c0, LMA: 0x17c0, Alignment: 0x20, Flags: SHF_ALLOC|SHF_EXECINSTR
+.text	0x17c0	0x0	C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin/../target/hexagon/lib/v73/G0/pic/initS.o	#SHT_PROGBITS,SHF_ALLOC|SHF_EXECINSTR,4
+.text.__cxa_finalize_stub	0x17c0	0x30	C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin/../target/hexagon/lib/v73/G0/pic/initS.o	#SHT_PROGBITS,SHF_ALLOC|SHF_EXECINSTR,32
+	0x17c0		__cxa_finalize_stub
+	0x17e8		__dso_handle
+.text	0x17f0	0x23f0	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_EXECINSTR,16
+	0x17f0		capi_gain_get_static_properties
+	0x19b0		_HAP_debug_v2
+	0x1a3c		diag_to_farf_mask_map
+	0x1ac4		capi_gain_init
+	0x1de8		capi_gain_tone_lut_init
+	0x1ef4		capi_gain_process
+	0x26c4		capi_gain_end
+	0x2854		capi_gain_set_param
+	0x30d8		capi_gain_get_param
+	0x3758		capi_gain_set_properties
+	0x3828		capi_gain_get_properties
+	0x38e8		capi_gain_tone_update_phase_inc
+	0x3a8c		capi_gain_tone_next_sample
+	0x3b28		capi_gain_tone_phase_inc
+	0x3b50		capi_gain_update_process_event
+.text	0x3be0	0x2750	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_EXECINSTR,16
+	0x3be0		capi_gain_module_init_media_fmt_v2
+	0x3c78		capi_gain_raise_process_event
+	0x3ec8		_HAP_debug_v2
+	0x3f54		diag_to_farf_mask_map
+	0x3fdc		capi_gain_raise_events
+	0x410c		capi_gain_raise_kpps_event
+	0x4230		capi_gain_raise_bandwidth_event
+	0x4388		capi_gain_raise_algo_delay_event
+	0x44ac		capi_gain_output_media_fmt_event_v2
+	0x472c		capi_gain_process_set_properties
+	0x5530		capi_gain_process_get_properties
+	0x6318		gain_align_to_8_byte
+.text	0x6330	0x354	hexagon_Debug_toolv87_v73/gain_lib.o	#SHT_PROGBITS,SHF_ALLOC|SHF_EXECINSTR,16
+	0x6330		example_apply_gain_16
+	0x641c		example_apply_gain_32_G1
+	0x658c		example_apply_gain_32_L1
+
+.fini	0x66a0	0x44 # Offset: 0x66a0, LMA: 0x66a0, Alignment: 0x20, Flags: SHF_ALLOC|SHF_EXECINSTR
+.fini	0x66a0	0x44	C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin/../target/hexagon/lib/v73/G0/pic/finiS.o	#SHT_PROGBITS,SHF_ALLOC|SHF_EXECINSTR,32
+	0x66a0		_fini
+
+.rodata	0x66e4	0xf8e # Offset: 0x66e4, LMA: 0x66e4, Alignment: 0x4, Flags: SHF_ALLOC
+.rodata	0x66e4	0x40	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC,4
+.rodata.str1.1	0x6724	0xc	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6724		.L.str
+.rodata.str1.1	0x6730	0x29	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6730		.L.str.1
+.rodata.str1.1	0x6759	0x2c	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6759		.L.str.2
+.rodata.str1.1	0x6785	0x3b	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6785		.L.str.3
+.rodata.str1.1	0x67c0	0x30	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x67c0		.L.str.4
+.rodata.str1.1	0x67f0	0x6b	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x67f0		.L.str.5
+.rodata.str1.1	0x685b	0x2e	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x685b		.L.str.6
+.rodata.str1.1	0x6889	0x27	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6889		.L.str.7
+.rodata.str1.1	0x68b0	0x2a	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x68b0		.L.str.8
+.rodata.str1.1	0x68da	0x29	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x68da		.L.str.9
+.rodata.str1.1	0x6903	0x33	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6903		.L.str.10
+.rodata.str1.1	0x6936	0x32	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6936		.L.str.11
+.rodata.str1.1	0x6968	0x54	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6968		.L.str.12
+.rodata.str1.1	0x69bc	0x4f	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x69bc		.L.str.13
+.rodata.str1.1	0x6a0b	0x14	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6a0b		.L.str.14
+.rodata.str1.1	0x6a1f	0x24	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6a1f		.L.str.15
+.rodata.str1.1	0x6a43	0x3d	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6a43		.L.str.16
+.rodata.str1.1	0x6a80	0x29	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6a80		.L.str.17
+.rodata.str1.1	0x6aa9	0x39	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6aa9		.L.str.18
+.rodata.str1.1	0x6ae2	0x53	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6ae2		.L.str.19
+.rodata.str1.1	0x6b35	0x37	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6b35		.L.str.20
+.rodata.str1.1	0x6b6c	0x3f	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6b6c		.L.str.21
+.rodata.str1.1	0x6bab	0x3e	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6bab		.L.str.22
+.rodata.str1.1	0x6be9	0x37	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6be9		.L.str.23
+.rodata.str1.1	0x6c20	0x33	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6c20		.L.str.24
+.rodata.str1.1	0x6c53	0x35	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6c53		.L.str.25
+.rodata.str1.1	0x6c88	0x23	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6c88		.L.str.26
+.rodata.str1.1	0x6cab	0x3b	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6cab		.L.str.27
+.rodata.str1.1	0x6ce6	0x26	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6ce6		.L.str.28
+.rodata.str1.1	0x6d0c	0x37	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6d0c		.L.str.29
+.rodata.str1.1	0x6d43	0x3e	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6d43		.L.str.30
+.rodata.str1.1	0x6d81	0x39	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6d81		.L.str.31
+.rodata.str1.1	0x6dba	0x33	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6dba		.L.str.32
+.rodata.str1.1	0x6ded	0x30	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6ded		.L.str.33
+.rodata.str1.1	0x6e1d	0x30	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6e1d		.L.str.34
+PADDING_ALIGNMENT	0x6e4d	0x3	0x0
+.rodata	0x6e50	0x40	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC,4
+.rodata.str1.1	0x6e90	0x12	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6e90		.L.str
+.rodata.str1.1	0x6ea2	0x4b	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6ea2		.L.str.1
+.rodata.str1.1	0x6eed	0x3d	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6eed		.L.str.2
+.rodata.str1.1	0x6f2a	0x33	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6f2a		.L.str.3
+.rodata.str1.1	0x6f5d	0x3e	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6f5d		.L.str.4
+.rodata.str1.1	0x6f9b	0x66	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x6f9b		.L.str.5
+.rodata.str1.1	0x7001	0x4e	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x7001		.L.str.6
+.rodata.str1.1	0x704f	0x7b	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x704f		.L.str.7
+.rodata.str1.1	0x70ca	0x2a	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x70ca		.L.str.8
+.rodata.str1.1	0x70f4	0x34	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x70f4		.L.str.9
+.rodata.str1.1	0x7128	0x55	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x7128		.L.str.10
+.rodata.str1.1	0x717d	0x3e	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x717d		.L.str.11
+.rodata.str1.1	0x71bb	0x2e	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x71bb		.L.str.12
+.rodata.str1.1	0x71e9	0x3e	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x71e9		.L.str.13
+.rodata.str1.1	0x7227	0x27	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x7227		.L.str.14
+.rodata.str1.1	0x724e	0x70	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x724e		.L.str.15
+.rodata.str1.1	0x72be	0x48	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x72be		.L.str.16
+.rodata.str1.1	0x7306	0x2b	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x7306		.L.str.17
+.rodata.str1.1	0x7331	0x28	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x7331		.L.str.18
+.rodata.str1.1	0x7359	0x29	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x7359		.L.str.19
+.rodata.str1.1	0x7382	0x2e	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x7382		.L.str.20
+.rodata.str1.1	0x73b0	0x36	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x73b0		.L.str.21
+.rodata.str1.1	0x73e6	0x34	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x73e6		.L.str.22
+.rodata.str1.1	0x741a	0x35	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x741a		.L.str.23
+.rodata.str1.1	0x744f	0x32	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x744f		.L.str.24
+.rodata.str1.1	0x7481	0x43	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x7481		.L.str.25
+.rodata.str1.1	0x74c4	0x35	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x74c4		.L.str.26
+.rodata.str1.1	0x74f9	0x2d	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x74f9		.L.str.27
+.rodata.str1.1	0x7526	0x30	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x7526		.L.str.28
+.rodata.str1.1	0x7556	0x47	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x7556		.L.str.29
+.rodata.str1.1	0x759d	0x33	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x759d		.L.str.30
+.rodata.str1.1	0x75d0	0x34	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x75d0		.L.str.31
+.rodata.str1.1	0x7604	0x39	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x7604		.L.str.32
+.rodata.str1.1	0x763d	0x35	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_ALLOC|SHF_MERGE|SHF_STRINGS,1
+	0x763d		.L.str.33
+
+.eh_frame	0x7680	0x4 # Offset: 0x7680, LMA: 0x7680, Alignment: 0x20, Flags: SHF_ALLOC
+.eh_frame	0x7680	0x0	C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin/../target/hexagon/lib/v73/G0/pic/initS.o	#SHT_PROGBITS,SHF_ALLOC,32
+	0x7680		__EH_FRAME_BEGIN__
+.eh_frame	0x7680	0x4	C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin/../target/hexagon/lib/v73/G0/pic/finiS.o	#SHT_PROGBITS,SHF_ALLOC,1
+	0x7680		__EH_FRAME_END__
+
+.dynamic	0x8000	0xb0 # Offset: 0x8000, LMA: 0x8000, Alignment: 0x4, Flags: SHF_ALLOC|SHF_WRITE
+
+.data	0x80b0	0x21c # Offset: 0x80b0, LMA: 0x80b0, Alignment: 0x8, Flags: SHF_ALLOC|SHF_WRITE
+.data.vtbl	0x80b0	0x18	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_WRITE,4
+	0x80b0		vtbl
+.data.tone_sin_lut	0x80c8	0x200	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_WRITE,8
+	0x80c8		tone_sin_lut
+.data.tone_sin_lut_ready	0x82c8	0x4	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_ALLOC|SHF_WRITE,4
+	0x82c8		tone_sin_lut_ready
+
+.ctors	0x82cc	0x8 # Offset: 0x82cc, LMA: 0x82cc, Alignment: 0x4, Flags: SHF_ALLOC|SHF_WRITE
+.ctors	0x82cc	0x4	C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin/../target/hexagon/lib/v73/G0/pic/initS.o	#SHT_PROGBITS,SHF_ALLOC|SHF_WRITE,4
+	0x82cc		__CTOR_LIST__
+.ctors	0x82d0	0x4	C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin/../target/hexagon/lib/v73/G0/pic/finiS.o	#SHT_PROGBITS,SHF_ALLOC|SHF_WRITE,1
+	0x82d0		__CTOR_END__
+
+.dtors	0x82d4	0xc # Offset: 0x82d4, LMA: 0x82d4, Alignment: 0x4, Flags: SHF_ALLOC|SHF_WRITE
+.dtors	0x82d4	0x8	C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin/../target/hexagon/lib/v73/G0/pic/initS.o	#SHT_PROGBITS,SHF_ALLOC|SHF_WRITE,4
+	0x82d4		__DTOR_LIST__
+.dtors	0x82dc	0x4	C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin/../target/hexagon/lib/v73/G0/pic/finiS.o	#SHT_PROGBITS,SHF_ALLOC|SHF_WRITE,1
+	0x82dc		__DTOR_END__
+
+.got	0x82e0	0xc # Offset: 0x82e0, LMA: 0x82e0, Alignment: 0x4, Flags: SHF_ALLOC|SHF_WRITE
+*(.got) #Rule 11, Internal-LinkerScript (Implicit rule inserted by Linker) [0:0]
+
+.got.plt	0x82f0	0x3c # Offset: 0x82f0, LMA: 0x82f0, Alignment: 0x8, Flags: SHF_ALLOC|SHF_WRITE
+*(.got.plt) #Rule 12, Internal-LinkerScript (Implicit rule inserted by Linker) [0:0]
+
+.debug_info	0x832c	0x2b54 # Offset: 0x832c, Alignment: 0x1, Flags: NONE
+.debug_info	0x832c	0x1411	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,NONE,1
+.debug_info	0x973d	0x1402	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,NONE,1
+.debug_info	0xab3f	0x2a5	hexagon_Debug_toolv87_v73/gain_lib.o	#SHT_PROGBITS,NONE,1
+.debug_info	0xade4	0x9c	hexagon_Debug_toolv87_v73/version_shared_lib.o	#SHT_PROGBITS,NONE,1
+
+.debug_abbrev	0xae80	0x4fb # Offset: 0xae80, Alignment: 0x1, Flags: NONE
+*(.debug_abbrev) #Rule 1, Internal-LinkerScript (Implicit rule inserted by Linker) [0:0]
+.debug_abbrev	0xae80	0x1fe	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,NONE,1
+.debug_abbrev	0xb07e	0x1f1	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,NONE,1
+.debug_abbrev	0xb26f	0x92	hexagon_Debug_toolv87_v73/gain_lib.o	#SHT_PROGBITS,NONE,1
+.debug_abbrev	0xb301	0x7a	hexagon_Debug_toolv87_v73/version_shared_lib.o	#SHT_PROGBITS,NONE,1
+
+.debug_aranges	0xb37b	0xa8 # Offset: 0xb37b, Alignment: 0x1, Flags: NONE
+*(.debug_aranges) #Rule 2, Internal-LinkerScript (Implicit rule inserted by Linker) [0:0]
+.debug_aranges	0xb37b	0x40	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,NONE,1
+.debug_aranges	0xb3bb	0x28	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,NONE,1
+.debug_aranges	0xb3e3	0x20	hexagon_Debug_toolv87_v73/gain_lib.o	#SHT_PROGBITS,NONE,1
+.debug_aranges	0xb403	0x20	hexagon_Debug_toolv87_v73/version_shared_lib.o	#SHT_PROGBITS,NONE,1
+
+.debug_str	0xb423	0x15f8 # Offset: 0xb423, Alignment: 0x1, Flags: SHF_MERGE|SHF_STRINGS
+*(.debug_str) #Rule 3, Internal-LinkerScript (Implicit rule inserted by Linker) [0:0]
+.debug_str	0xb423	0x27	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb44a	0x15	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb45f	0x44	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb4a3	0x5	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb4a8	0x14	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb4bc	0x5	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb4c1	0x8	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb4c9	0xe	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb4d7	0x9	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb4e0	0x9	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb4e9	0xb	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb4f4	0x9	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb4fd	0x7	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb504	0x6	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb50a	0x13	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb51d	0xd	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb52a	0xb	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb535	0x9	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb53e	0x9	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb547	0x9	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb550	0x8	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb558	0x14	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb56c	0xc	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb578	0x9	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb581	0x5	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb586	0x14	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb59a	0xa	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb5a4	0xa	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb5ae	0xa	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb5b8	0x8	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb5c0	0x8	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb5c8	0x9	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb5d1	0xc	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb5dd	0x7	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb5e4	0x10	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb5f4	0xd	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb601	0xb	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb60c	0x9	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb615	0x13	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb628	0x4	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb62c	0xa	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb636	0x9	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb63f	0xe	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb64d	0x7	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb654	0xe	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb662	0xb	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb66d	0x11	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb67e	0xa	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb688	0xf	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb697	0xa	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb6a1	0x9	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb6aa	0x3	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb6ad	0xd	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb6ba	0x1d	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb6d7	0x10	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb6e7	0x17	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb6fe	0x10	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb70e	0x1d	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb72b	0x25	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb750	0x21	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb771	0x1a	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb78b	0x13	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb79e	0x17	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb7b5	0x1b	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb7d0	0x19	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb7e9	0x13	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb7fc	0xd	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb809	0x18	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb821	0xe	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb82f	0x16	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb845	0x18	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb85d	0x1b	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb878	0x18	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb890	0x12	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb8a2	0x19	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb8bb	0x17	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb8d2	0x19	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb8eb	0x27	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb912	0x2a	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb93c	0x1c	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb958	0x18	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb970	0xe	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb97e	0x19	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb997	0x1e	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb9b5	0x18	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb9cd	0x19	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb9e6	0x15	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xb9fb	0x1c	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xba17	0x1c	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xba33	0x12	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xba45	0x13	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xba58	0x8	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xba60	0xa	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xba6a	0xc	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xba76	0x10	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xba86	0xf	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xba95	0xc	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbaa1	0xd	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbaae	0x6	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbab4	0x8	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbabc	0x13	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbacf	0x10	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbadf	0x15	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbaf4	0x1e	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbb12	0x20	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbb32	0x27	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbb59	0x19	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbb72	0x1d	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbb8f	0x14	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbba3	0x26	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbbc9	0x1e	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbbe7	0x1f	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbc06	0x20	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbc26	0x16	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbc3c	0x2a	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbc66	0x25	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbc8b	0x21	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbcac	0x22	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbcce	0x1e	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbcec	0x17	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbd03	0xf	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbd12	0x10	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbd22	0x11	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbd33	0x14	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbd47	0x14	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbd5b	0x19	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbd74	0x18	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbd8c	0x1f	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbdab	0x18	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbdc3	0x19	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbddc	0x24	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbe00	0x22	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbe22	0x15	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbe37	0xe	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbe45	0x11	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbe56	0x1a	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbe70	0x1c	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbe8c	0x1a	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbea6	0x14	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbeba	0x8	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbec2	0x9	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbecb	0x12	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbedd	0x10	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbeed	0xe	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbefb	0x1b	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbf16	0xa	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbf20	0x8	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbf28	0xf	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbf37	0x14	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbf4b	0x7	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbf52	0xe	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbf60	0xc	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbf6c	0x1a	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbf86	0x1c	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbfa2	0x7	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbfa9	0xe	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbfb7	0x11	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbfc8	0xd	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbfd5	0x10	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbfe5	0x9	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbfee	0xe	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xbffc	0xf	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc00b	0x12	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc01d	0xd	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc02a	0xf	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc039	0x9	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc042	0x14	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc056	0x1f	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc075	0x16	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc08b	0xc	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc097	0x7	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc09e	0x5	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc0a3	0xc	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc0af	0x8	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc0b7	0x8	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc0bf	0x16	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc0d5	0x18	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc0ed	0xc	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc0f9	0x9	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc102	0x9	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc10b	0x18	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc123	0x1a	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc13d	0xb	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc148	0x8	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc150	0xe	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc15e	0xc	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc16a	0xf	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc179	0xa	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc183	0xa	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc18d	0x17	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc1a4	0xc	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc1b0	0x5	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc1b5	0x8	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc1bd	0x8	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc1c5	0x13	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc1d8	0xb	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc1e3	0x9	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc1ec	0x19	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc205	0x5	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc20a	0x1b	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc225	0x17	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc23c	0x6	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc242	0x20	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc262	0xe	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc270	0x16	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc286	0x7	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc28d	0xf	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc29c	0x18	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc2b4	0x12	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc2c6	0xe	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc2d4	0x14	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc2e8	0x14	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc2fc	0x19	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc315	0x19	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc32e	0x20	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc34e	0x1b	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc369	0x19	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc382	0x1f	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc3a1	0x14	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc3b5	0x12	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc3c7	0xc	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc3d3	0x6	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc3d9	0x4	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc3dd	0x5	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc3e2	0x5	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc3e7	0x4	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc3eb	0x5	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc3f0	0x12	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc402	0x8	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc40a	0xb	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc415	0x5	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc41a	0x7	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc421	0xb	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc42c	0x2	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc42e	0x6	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc434	0x6	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc43a	0x6	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc440	0x7	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc447	0xd	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc454	0x14	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc468	0x13	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc47b	0xc	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc487	0xc	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc493	0x3	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc496	0x8	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc49e	0x2	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc4a0	0x6	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc4a6	0x9	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc4af	0xe	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc4bd	0xb	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc4c8	0x17	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc4df	0xd	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc4ec	0xd	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc4f9	0xb	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc504	0xa	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc50e	0x5	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc513	0x5	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc518	0x4	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc51c	0x5	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc521	0x5	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc526	0x5	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc52b	0x7	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc532	0x7	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc539	0x1b	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc554	0x10	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc564	0x11	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc575	0x15	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc58a	0xe	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc598	0x1f	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc5b7	0x12	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc5c9	0xb	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc5d4	0x12	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc5e6	0x18	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc5fe	0x1f	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc61d	0x20	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc63d	0x13	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc650	0x1b	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc66b	0x23	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc68e	0x1e	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc6ac	0x17	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc6c3	0x1b	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc6de	0x20	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc6fe	0x21	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc71f	0x24	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc743	0x21	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc764	0x21	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc785	0x15	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc79a	0xe	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc7a8	0x2	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc7aa	0x6	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc7b0	0xb	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc7bb	0x1b	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc7d6	0xb	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc7e1	0x7	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc7e8	0x5	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc7ed	0x12	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc7ff	0xf	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc80e	0xf	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc81d	0x17	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc834	0x1f	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc853	0xc	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc85f	0xe	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc86d	0xd	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc87a	0xd	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc887	0xb	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc892	0xc	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc89e	0x11	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc8af	0xe	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc8bd	0xb	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc8c8	0x4	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc8cc	0x13	hexagon_Debug_toolv87_v73/gain_lib.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc8df	0x7	hexagon_Debug_toolv87_v73/gain_lib.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc8e6	0x7	hexagon_Debug_toolv87_v73/gain_lib.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc8ed	0x7	hexagon_Debug_toolv87_v73/gain_lib.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc8f4	0x7	hexagon_Debug_toolv87_v73/gain_lib.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc8fb	0x16	hexagon_Debug_toolv87_v73/gain_lib.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc911	0x19	hexagon_Debug_toolv87_v73/gain_lib.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc92a	0x19	hexagon_Debug_toolv87_v73/gain_lib.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc943	0x7	hexagon_Debug_toolv87_v73/gain_lib.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc94a	0x6	hexagon_Debug_toolv87_v73/gain_lib.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc950	0x8	hexagon_Debug_toolv87_v73/gain_lib.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc958	0x9	hexagon_Debug_toolv87_v73/gain_lib.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc961	0xb	hexagon_Debug_toolv87_v73/gain_lib.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc96c	0x8	hexagon_Debug_toolv87_v73/gain_lib.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc974	0xd	hexagon_Debug_toolv87_v73/gain_lib.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc981	0x6	hexagon_Debug_toolv87_v73/gain_lib.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc987	0xb	hexagon_Debug_toolv87_v73/gain_lib.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc992	0x5a	hexagon_Debug_toolv87_v73/version_shared_lib.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc9ec	0x7	hexagon_Debug_toolv87_v73/version_shared_lib.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc9f3	0xa	hexagon_Debug_toolv87_v73/version_shared_lib.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xc9fd	0xa	hexagon_Debug_toolv87_v73/version_shared_lib.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xca07	0x5	hexagon_Debug_toolv87_v73/version_shared_lib.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xca0c	0x5	hexagon_Debug_toolv87_v73/version_shared_lib.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.debug_str	0xca11	0xa	hexagon_Debug_toolv87_v73/version_shared_lib.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+
+.comment	0xca1b	0x6bf # Offset: 0xca1b, Alignment: 0x1, Flags: SHF_MERGE|SHF_STRINGS
+*(.comment) #Rule 4, Internal-LinkerScript (Implicit rule inserted by Linker) [0:0]
+.comment	0xca1b	0x1	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+	.comment	0x0	hexagon_Debug_toolv87_v73/capi_gain_utils.o
+	.comment	0x0	hexagon_Debug_toolv87_v73/gain_lib.o
+	.comment	0x0	hexagon_Debug_toolv87_v73/version_shared_lib.o
+.comment	0xca1c	0x27	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+	.comment	0x1	hexagon_Debug_toolv87_v73/capi_gain_utils.o
+	.comment	0x1	hexagon_Debug_toolv87_v73/gain_lib.o
+	.comment	0x1	hexagon_Debug_toolv87_v73/version_shared_lib.o
+.comment	0xca43	0x57	Linker Version	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+.comment	0xca9a	0x640	Linker Version	#SHT_PROGBITS,SHF_MERGE|SHF_STRINGS,1
+
+.note.GNU-stack	0xd0da	0x0 # Offset: 0xd0da, Alignment: 0x1, Flags: NONE
+*(.note.GNU-stack) #Rule 5, Internal-LinkerScript (Implicit rule inserted by Linker) [0:0]
+
+.note.llvm.cgmdinfo	0xd0da	0x2a6 # Offset: 0xd0da, Alignment: 0x1, Flags: NONE
+*(.note.llvm.cgmdinfo) #Rule 6, Internal-LinkerScript (Implicit rule inserted by Linker) [0:0]
+.note.llvm.cgmdinfo	0xd0da	0x251	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_NOTE,NONE,1
+.note.llvm.cgmdinfo	0xd32b	0x55	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_NOTE,NONE,1
+
+.debug_frame	0xd380	0x30c # Offset: 0xd380, Alignment: 0x4, Flags: NONE
+*(.debug_frame) #Rule 7, Internal-LinkerScript (Implicit rule inserted by Linker) [0:0]
+.debug_frame	0xd380	0x17c	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,NONE,4
+.debug_frame	0xd4fc	0x134	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,NONE,4
+.debug_frame	0xd630	0x5c	hexagon_Debug_toolv87_v73/gain_lib.o	#SHT_PROGBITS,NONE,4
+
+.debug_line	0xd68c	0x2ed7 # Offset: 0xd68c, Alignment: 0x1, Flags: NONE
+*(.debug_line) #Rule 8, Internal-LinkerScript (Implicit rule inserted by Linker) [0:0]
+.debug_line	0xd68c	0x15de	hexagon_Debug_toolv87_v73/capi_gain.o	#SHT_PROGBITS,NONE,1
+.debug_line	0xec6a	0x15b7	hexagon_Debug_toolv87_v73/capi_gain_utils.o	#SHT_PROGBITS,NONE,1
+.debug_line	0x10221	0x2c7	hexagon_Debug_toolv87_v73/gain_lib.o	#SHT_PROGBITS,NONE,1
+.debug_line	0x104e8	0x7b	hexagon_Debug_toolv87_v73/version_shared_lib.o	#SHT_PROGBITS,NONE,1
+
+.shstrtab	0x10563	0x111 # Offset: 0x10563, Alignment: 0x1, Flags: NONE
+
+.symtab	0x10674	0x9b0 # Offset: 0x10674, Alignment: 0x4, Flags: NONE
+
+.strtab	0x11024	0x823 # Offset: 0x11024, Alignment: 0x1, Flags: NONE

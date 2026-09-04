@@ -1,0 +1,166 @@
+The target system is: QURT - 1 - Hexagon
+The host system is: Windows - 10.0.26200 - AMD64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: C:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/HEXAGON_Tools/8.7.06/Tools/bin/hexagon-clang.exe 
+Build flags: 
+Id flags:  
+
+The output was:
+0
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
+
+The C compiler identification is Clang, found in "C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/examples/capi_gain/hexagon_Debug_toolv87_v73/CMakeFiles/3.22.2/CompilerIdC/a.out"
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+Compiler: C:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/HEXAGON_Tools/8.7.06/Tools/bin/hexagon-clang++.exe 
+Build flags: 
+Id flags:  
+
+The output was:
+0
+
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
+
+The CXX compiler identification is Clang, found in "C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/examples/capi_gain/hexagon_Debug_toolv87_v73/CMakeFiles/3.22.2/CompilerIdCXX/a.out"
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/examples/capi_gain/hexagon_Debug_toolv87_v73/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\cmake-3.22.2-windows-x86_64\bin\ninja.exe cmTC_ddef5 && [1/2] Building C object CMakeFiles/cmTC_ddef5.dir/CMakeCCompilerABI.c.obj
+QuIC LLVM Hexagon Clang version 8.7.06
+Target: hexagon
+Thread model: posix
+InstalledDir: C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin
+ (in-process)
+ "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin\\hexagon-clang.exe" -cc1 -triple hexagon -emit-obj -mrelax-all --mrelax-relocations -disable-free -clear-ast-before-backend -main-file-name CMakeCCompilerABI.c -mrelocation-model static -mframe-pointer=all -fmath-errno -ffp-contract=on -fno-rounding-math -mconstructor-aliases -fno-use-init-array -target-cpu hexagonv68 -target-feature -long-calls -target-cpu hexagonv68 -fno-signed-char -fshort-enums -fcommon -Wno-error=implicit-function-declaration -Wno-error=implicit-int -Wno-error=int-conversion -Wno-error=declaration-after-statement -Wreturn-type -D__HEXMSGABI_3_SUPPORTED__ -mllvm -quiet-snan=false -mllvm -inline-threshold=100 -mllvm -enable-tcm-inline-heuristic=true -mllvm -disable-aa-sched=false -mllvm -callee-stack-inline-threshold=512 -ffine-grained-bitfield-accesses -fmin-word-bitfield-accesses -mllvm -treat-scalable-fixed-error-as-warning -debugger-tuning=gdb -v "-fcoverage-compilation-dir=C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\addons\\audio\\spf\\examples\\capi_gain\\hexagon_Debug_toolv87_v73\\CMakeFiles\\CMakeTmp" -resource-dir "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\lib\\clang\\15.0.0" -dependency-file "CMakeFiles\\cmTC_ddef5.dir\\CMakeCCompilerABI.c.obj.d" -MT CMakeFiles/cmTC_ddef5.dir/CMakeCCompilerABI.c.obj -sys-header-deps -internal-externc-isystem "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/include" "-fdebug-compilation-dir=C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\addons\\audio\\spf\\examples\\capi_gain\\hexagon_Debug_toolv87_v73\\CMakeFiles\\CMakeTmp" -ferror-limit 19 -mllvm -enable-cg-md-addr-taken=true -mllvm -enable-cg-md-addr-taken2=true -mllvm -inline-pgo-non-lto=true -fno-signed-char -fgnuc-version=4.2.1 -faddrsig -o CMakeFiles/cmTC_ddef5.dir/CMakeCCompilerABI.c.obj -x c C:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/cmake-3.22.2-windows-x86_64/share/cmake-3.22/Modules/CMakeCCompilerABI.c -no-opaque-pointers
+clang -cc1 version 15.0.0 based upon LLVM 15.0.0 default target hexagon-unknown-elf
+#include "..." search starts here:
+#include <...> search starts here:
+ C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin/../target/hexagon/include
+ C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\lib\clang\15.0.0\include
+End of search list.
+[2/2] Linking C executable cmTC_ddef5
+QuIC LLVM Hexagon Clang version 8.7.06
+Target: hexagon
+Thread model: posix
+InstalledDir: C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin
+ "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin\\hexagon-link" --hash-style=sysv -march=hexagon -mcpu=hexagonv65 -G0 -o cmTC_ddef5 "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/lib/v65/G0/crt0_standalone.o" "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/lib/v65/G0/crt0.o" "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/lib/v65/G0/init.o" "-LC:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/lib/v65/G0" "-LC:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/lib/v65" "-LC:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/lib" -LC:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/HEXAGON_Tools/8.7.06/Tools/target/hexagon/lib/v65/G0/ -LC:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/HEXAGON_Tools/8.7.06/Tools/target/hexagon/lib/ --no-threads --dynamic-linker= -E --force-dynamic -u main --start-group CMakeFiles/cmTC_ddef5.dir/CMakeCCompilerABI.c.obj --end-group --start-group -lstandalone -lc -lgcc --end-group --start-group -lstandalone -lc -lgcc --end-group "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/lib/v65/G0/fini.o"
+
+
+
+Parsed C implicit include dir info from above output: rv=done
+  found start of include info
+  found start of implicit include info
+    add: [C:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/HEXAGON_Tools/8.7.06/Tools/bin/../target/hexagon/include]
+    add: [C:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/HEXAGON_Tools/8.7.06/Tools/lib/clang/15.0.0/include]
+  end of search list found
+  collapse include dir [C:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/HEXAGON_Tools/8.7.06/Tools/bin/../target/hexagon/include] ==> [C:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/HEXAGON_Tools/8.7.06/Tools/target/hexagon/include]
+  collapse include dir [C:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/HEXAGON_Tools/8.7.06/Tools/lib/clang/15.0.0/include] ==> [C:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/HEXAGON_Tools/8.7.06/Tools/lib/clang/15.0.0/include]
+  implicit include dirs: [C:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/HEXAGON_Tools/8.7.06/Tools/target/hexagon/include;C:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/HEXAGON_Tools/8.7.06/Tools/lib/clang/15.0.0/include]
+
+
+Parsed C implicit link information from above output:
+  link line regex: [^( *|.*[/\])(CMAKE_LINKER-NOTFOUND|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/examples/capi_gain/hexagon_Debug_toolv87_v73/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command(s):C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\cmake-3.22.2-windows-x86_64\bin\ninja.exe cmTC_ddef5 && [1/2] Building C object CMakeFiles/cmTC_ddef5.dir/CMakeCCompilerABI.c.obj]
+  ignore line: [QuIC LLVM Hexagon Clang version 8.7.06]
+  ignore line: [Target: hexagon]
+  ignore line: [Thread model: posix]
+  ignore line: [InstalledDir: C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin]
+  ignore line: [ (in-process)]
+  ignore line: [ "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin\\hexagon-clang.exe" -cc1 -triple hexagon -emit-obj -mrelax-all --mrelax-relocations -disable-free -clear-ast-before-backend -main-file-name CMakeCCompilerABI.c -mrelocation-model static -mframe-pointer=all -fmath-errno -ffp-contract=on -fno-rounding-math -mconstructor-aliases -fno-use-init-array -target-cpu hexagonv68 -target-feature -long-calls -target-cpu hexagonv68 -fno-signed-char -fshort-enums -fcommon -Wno-error=implicit-function-declaration -Wno-error=implicit-int -Wno-error=int-conversion -Wno-error=declaration-after-statement -Wreturn-type -D__HEXMSGABI_3_SUPPORTED__ -mllvm -quiet-snan=false -mllvm -inline-threshold=100 -mllvm -enable-tcm-inline-heuristic=true -mllvm -disable-aa-sched=false -mllvm -callee-stack-inline-threshold=512 -ffine-grained-bitfield-accesses -fmin-word-bitfield-accesses -mllvm -treat-scalable-fixed-error-as-warning -debugger-tuning=gdb -v "-fcoverage-compilation-dir=C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\addons\\audio\\spf\\examples\\capi_gain\\hexagon_Debug_toolv87_v73\\CMakeFiles\\CMakeTmp" -resource-dir "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\lib\\clang\\15.0.0" -dependency-file "CMakeFiles\\cmTC_ddef5.dir\\CMakeCCompilerABI.c.obj.d" -MT CMakeFiles/cmTC_ddef5.dir/CMakeCCompilerABI.c.obj -sys-header-deps -internal-externc-isystem "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/include" "-fdebug-compilation-dir=C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\addons\\audio\\spf\\examples\\capi_gain\\hexagon_Debug_toolv87_v73\\CMakeFiles\\CMakeTmp" -ferror-limit 19 -mllvm -enable-cg-md-addr-taken=true -mllvm -enable-cg-md-addr-taken2=true -mllvm -inline-pgo-non-lto=true -fno-signed-char -fgnuc-version=4.2.1 -faddrsig -o CMakeFiles/cmTC_ddef5.dir/CMakeCCompilerABI.c.obj -x c C:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/cmake-3.22.2-windows-x86_64/share/cmake-3.22/Modules/CMakeCCompilerABI.c -no-opaque-pointers]
+  ignore line: [clang -cc1 version 15.0.0 based upon LLVM 15.0.0 default target hexagon-unknown-elf]
+  ignore line: [#include "..." search starts here:]
+  ignore line: [#include <...> search starts here:]
+  ignore line: [ C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin/../target/hexagon/include]
+  ignore line: [ C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\lib\clang\15.0.0\include]
+  ignore line: [End of search list.]
+  ignore line: [[2/2] Linking C executable cmTC_ddef5]
+  ignore line: [QuIC LLVM Hexagon Clang version 8.7.06]
+  ignore line: [Target: hexagon]
+  ignore line: [Thread model: posix]
+  ignore line: [InstalledDir: C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin]
+  ignore line: [ "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin\\hexagon-link" --hash-style=sysv -march=hexagon -mcpu=hexagonv65 -G0 -o cmTC_ddef5 "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/lib/v65/G0/crt0_standalone.o" "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/lib/v65/G0/crt0.o" "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/lib/v65/G0/init.o" "-LC:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/lib/v65/G0" "-LC:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/lib/v65" "-LC:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/lib" -LC:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/HEXAGON_Tools/8.7.06/Tools/target/hexagon/lib/v65/G0/ -LC:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/HEXAGON_Tools/8.7.06/Tools/target/hexagon/lib/ --no-threads --dynamic-linker= -E --force-dynamic -u main --start-group CMakeFiles/cmTC_ddef5.dir/CMakeCCompilerABI.c.obj --end-group --start-group -lstandalone -lc -lgcc --end-group --start-group -lstandalone -lc -lgcc --end-group "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/lib/v65/G0/fini.o"]
+  ignore line: []
+  ignore line: []
+  implicit libs: []
+  implicit objs: []
+  implicit dirs: []
+  implicit fwks: []
+
+
+Detecting CXX compiler ABI info compiled with the following output:
+Change Dir: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/examples/capi_gain/hexagon_Debug_toolv87_v73/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\cmake-3.22.2-windows-x86_64\bin\ninja.exe cmTC_bf20f && [1/2] Building CXX object CMakeFiles/cmTC_bf20f.dir/CMakeCXXCompilerABI.cpp.obj
+QuIC LLVM Hexagon Clang version 8.7.06
+Target: hexagon
+Thread model: posix
+InstalledDir: C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin
+ (in-process)
+ "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin\\hexagon-clang++.exe" -cc1 -triple hexagon -emit-obj -mrelax-all --mrelax-relocations -disable-free -clear-ast-before-backend -main-file-name CMakeCXXCompilerABI.cpp -mrelocation-model static -mframe-pointer=all -fmath-errno -ffp-contract=on -fno-rounding-math -mconstructor-aliases -fno-use-init-array -target-cpu hexagonv68 -target-feature -long-calls -target-cpu hexagonv68 -fno-signed-char -fshort-enums -fcommon -Wno-error=implicit-function-declaration -Wno-error=implicit-int -Wno-error=int-conversion -Wno-error=declaration-after-statement -Wreturn-type -D__HEXMSGABI_3_SUPPORTED__ -mllvm -quiet-snan=false -mllvm -inline-threshold=100 -mllvm -enable-tcm-inline-heuristic=true -mllvm -disable-aa-sched=false -mllvm -callee-stack-inline-threshold=512 -ffine-grained-bitfield-accesses -fmin-word-bitfield-accesses -mllvm -treat-scalable-fixed-error-as-warning -debugger-tuning=gdb -v "-fcoverage-compilation-dir=C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\addons\\audio\\spf\\examples\\capi_gain\\hexagon_Debug_toolv87_v73\\CMakeFiles\\CMakeTmp" -resource-dir "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\lib\\clang\\15.0.0" -dependency-file "CMakeFiles\\cmTC_bf20f.dir\\CMakeCXXCompilerABI.cpp.obj.d" -MT CMakeFiles/cmTC_bf20f.dir/CMakeCXXCompilerABI.cpp.obj -sys-header-deps -internal-externc-isystem "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/include/c++/v1" -D_USE_GENERIC_XLOCALE_SHIMS -D_LIBCPP_PROVIDES_DEFAULT_RUNE_TABLE -D_C99 -D_C_AS_CPP -D_HAS_GENERIC_TEMPLATES=0 -D_PROVIDE_POSIX_TIME_DECLS=1 -internal-externc-isystem "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/include" -fdeprecated-macro "-fdebug-compilation-dir=C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\addons\\audio\\spf\\examples\\capi_gain\\hexagon_Debug_toolv87_v73\\CMakeFiles\\CMakeTmp" -ferror-limit 19 -mllvm -enable-cg-md-addr-taken=true -mllvm -enable-cg-md-addr-taken2=true -mllvm -inline-pgo-non-lto=true -fno-signed-char -fgnuc-version=4.2.1 -fcxx-exceptions -fexceptions -faddrsig -D__GCC_HAVE_DWARF2_CFI_ASM=1 -o CMakeFiles/cmTC_bf20f.dir/CMakeCXXCompilerABI.cpp.obj -x c++ C:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/cmake-3.22.2-windows-x86_64/share/cmake-3.22/Modules/CMakeCXXCompilerABI.cpp -no-opaque-pointers
+clang -cc1 version 15.0.0 based upon LLVM 15.0.0 default target hexagon-unknown-elf
+#include "..." search starts here:
+#include <...> search starts here:
+ C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin/../target/hexagon/include/c++/v1
+ C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin/../target/hexagon/include
+ C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\lib\clang\15.0.0\include
+End of search list.
+[2/2] Linking CXX executable cmTC_bf20f
+QuIC LLVM Hexagon Clang version 8.7.06
+Target: hexagon
+Thread model: posix
+InstalledDir: C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin
+ "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin\\hexagon-link" --hash-style=sysv -march=hexagon -mcpu=hexagonv65 -G0 -o cmTC_bf20f "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/lib/v65/G0/crt0_standalone.o" "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/lib/v65/G0/crt0.o" "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/lib/v65/G0/init.o" "-LC:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/lib/v65/G0" "-LC:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/lib/v65" "-LC:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/lib" -LC:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/HEXAGON_Tools/8.7.06/Tools/target/hexagon/lib/v65/G0/ -LC:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/HEXAGON_Tools/8.7.06/Tools/target/hexagon/lib/ --no-threads --dynamic-linker= -E --force-dynamic -u main --start-group CMakeFiles/cmTC_bf20f.dir/CMakeCXXCompilerABI.cpp.obj --end-group --start-group -lstandalone -lc -lgcc --end-group --start-group -lstandalone -lc -lgcc --end-group "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/lib/v65/G0/fini.o"
+
+
+
+Parsed CXX implicit include dir info from above output: rv=done
+  found start of include info
+  found start of implicit include info
+    add: [C:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/HEXAGON_Tools/8.7.06/Tools/bin/../target/hexagon/include/c++/v1]
+    add: [C:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/HEXAGON_Tools/8.7.06/Tools/bin/../target/hexagon/include]
+    add: [C:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/HEXAGON_Tools/8.7.06/Tools/lib/clang/15.0.0/include]
+  end of search list found
+  collapse include dir [C:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/HEXAGON_Tools/8.7.06/Tools/bin/../target/hexagon/include/c++/v1] ==> [C:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/HEXAGON_Tools/8.7.06/Tools/target/hexagon/include/c++/v1]
+  collapse include dir [C:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/HEXAGON_Tools/8.7.06/Tools/bin/../target/hexagon/include] ==> [C:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/HEXAGON_Tools/8.7.06/Tools/target/hexagon/include]
+  collapse include dir [C:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/HEXAGON_Tools/8.7.06/Tools/lib/clang/15.0.0/include] ==> [C:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/HEXAGON_Tools/8.7.06/Tools/lib/clang/15.0.0/include]
+  implicit include dirs: [C:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/HEXAGON_Tools/8.7.06/Tools/target/hexagon/include/c++/v1;C:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/HEXAGON_Tools/8.7.06/Tools/target/hexagon/include;C:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/HEXAGON_Tools/8.7.06/Tools/lib/clang/15.0.0/include]
+
+
+Parsed CXX implicit link information from above output:
+  link line regex: [^( *|.*[/\])(CMAKE_LINKER-NOTFOUND|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/examples/capi_gain/hexagon_Debug_toolv87_v73/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command(s):C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\cmake-3.22.2-windows-x86_64\bin\ninja.exe cmTC_bf20f && [1/2] Building CXX object CMakeFiles/cmTC_bf20f.dir/CMakeCXXCompilerABI.cpp.obj]
+  ignore line: [QuIC LLVM Hexagon Clang version 8.7.06]
+  ignore line: [Target: hexagon]
+  ignore line: [Thread model: posix]
+  ignore line: [InstalledDir: C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin]
+  ignore line: [ (in-process)]
+  ignore line: [ "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin\\hexagon-clang++.exe" -cc1 -triple hexagon -emit-obj -mrelax-all --mrelax-relocations -disable-free -clear-ast-before-backend -main-file-name CMakeCXXCompilerABI.cpp -mrelocation-model static -mframe-pointer=all -fmath-errno -ffp-contract=on -fno-rounding-math -mconstructor-aliases -fno-use-init-array -target-cpu hexagonv68 -target-feature -long-calls -target-cpu hexagonv68 -fno-signed-char -fshort-enums -fcommon -Wno-error=implicit-function-declaration -Wno-error=implicit-int -Wno-error=int-conversion -Wno-error=declaration-after-statement -Wreturn-type -D__HEXMSGABI_3_SUPPORTED__ -mllvm -quiet-snan=false -mllvm -inline-threshold=100 -mllvm -enable-tcm-inline-heuristic=true -mllvm -disable-aa-sched=false -mllvm -callee-stack-inline-threshold=512 -ffine-grained-bitfield-accesses -fmin-word-bitfield-accesses -mllvm -treat-scalable-fixed-error-as-warning -debugger-tuning=gdb -v "-fcoverage-compilation-dir=C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\addons\\audio\\spf\\examples\\capi_gain\\hexagon_Debug_toolv87_v73\\CMakeFiles\\CMakeTmp" -resource-dir "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\lib\\clang\\15.0.0" -dependency-file "CMakeFiles\\cmTC_bf20f.dir\\CMakeCXXCompilerABI.cpp.obj.d" -MT CMakeFiles/cmTC_bf20f.dir/CMakeCXXCompilerABI.cpp.obj -sys-header-deps -internal-externc-isystem "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/include/c++/v1" -D_USE_GENERIC_XLOCALE_SHIMS -D_LIBCPP_PROVIDES_DEFAULT_RUNE_TABLE -D_C99 -D_C_AS_CPP -D_HAS_GENERIC_TEMPLATES=0 -D_PROVIDE_POSIX_TIME_DECLS=1 -internal-externc-isystem "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/include" -fdeprecated-macro "-fdebug-compilation-dir=C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\addons\\audio\\spf\\examples\\capi_gain\\hexagon_Debug_toolv87_v73\\CMakeFiles\\CMakeTmp" -ferror-limit 19 -mllvm -enable-cg-md-addr-taken=true -mllvm -enable-cg-md-addr-taken2=true -mllvm -inline-pgo-non-lto=true -fno-signed-char -fgnuc-version=4.2.1 -fcxx-exceptions -fexceptions -faddrsig -D__GCC_HAVE_DWARF2_CFI_ASM=1 -o CMakeFiles/cmTC_bf20f.dir/CMakeCXXCompilerABI.cpp.obj -x c++ C:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/cmake-3.22.2-windows-x86_64/share/cmake-3.22/Modules/CMakeCXXCompilerABI.cpp -no-opaque-pointers]
+  ignore line: [clang -cc1 version 15.0.0 based upon LLVM 15.0.0 default target hexagon-unknown-elf]
+  ignore line: [#include "..." search starts here:]
+  ignore line: [#include <...> search starts here:]
+  ignore line: [ C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin/../target/hexagon/include/c++/v1]
+  ignore line: [ C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin/../target/hexagon/include]
+  ignore line: [ C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\lib\clang\15.0.0\include]
+  ignore line: [End of search list.]
+  ignore line: [[2/2] Linking CXX executable cmTC_bf20f]
+  ignore line: [QuIC LLVM Hexagon Clang version 8.7.06]
+  ignore line: [Target: hexagon]
+  ignore line: [Thread model: posix]
+  ignore line: [InstalledDir: C:\Qualcomm\Hexagon_SDK\5.5.6.0\tools\HEXAGON_Tools\8.7.06\Tools\bin]
+  ignore line: [ "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin\\hexagon-link" --hash-style=sysv -march=hexagon -mcpu=hexagonv65 -G0 -o cmTC_bf20f "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/lib/v65/G0/crt0_standalone.o" "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/lib/v65/G0/crt0.o" "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/lib/v65/G0/init.o" "-LC:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/lib/v65/G0" "-LC:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/lib/v65" "-LC:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/lib" -LC:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/HEXAGON_Tools/8.7.06/Tools/target/hexagon/lib/v65/G0/ -LC:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/HEXAGON_Tools/8.7.06/Tools/target/hexagon/lib/ --no-threads --dynamic-linker= -E --force-dynamic -u main --start-group CMakeFiles/cmTC_bf20f.dir/CMakeCXXCompilerABI.cpp.obj --end-group --start-group -lstandalone -lc -lgcc --end-group --start-group -lstandalone -lc -lgcc --end-group "C:\\Qualcomm\\Hexagon_SDK\\5.5.6.0\\tools\\HEXAGON_Tools\\8.7.06\\Tools\\bin/../target/hexagon/lib/v65/G0/fini.o"]
+  ignore line: []
+  ignore line: []
+  implicit libs: []
+  implicit objs: []
+  implicit dirs: []
+  implicit fwks: []
+
+

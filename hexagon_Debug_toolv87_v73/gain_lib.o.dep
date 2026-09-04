@@ -1,0 +1,80 @@
+lib/src/gain_lib.c:
+lib/inc/gain_lib.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/ar_utils/ar_defs.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/gpr/platform/qurt/osal/api/ar_osal_types.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/test/test_capi/inc/stringl.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/ar_utils/hexagon/sim/ar_msg.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/ar_utils/ar_error_codes.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_std.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/hexagon/posal_types.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/hexagon/posal_atomic.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/hexagon/posal_intrinsics.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_memory.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_memorymap.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_heapmgr.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/hexagon/posal_channel.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_signal.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_queue.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_bufpool.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_cache.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_mutex.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_nmutex.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_thread.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_timer.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_interrupt.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_condvar.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_island.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_data_log.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_globalstate.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_thread_prio.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_thread_profiling.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/incs/HAP_farf.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/gpr/platform/qurt/osal/api/ar_osal_error.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/core/api/services/assert.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/rtos/qurt/computev73/include/qurt/atomic_ops.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/generic/posal_tgt_util.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/incs/stddef/AEEStdDef.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/incs/HAP_debug.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/rtos/qurt/computev73/include/qurt/qurt_atomic_ops.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/rtos/qurt/computev73/include/qurt/atomic_ops_plat.h:
+hexagon_Debug_toolv87_v73/gain_lib.o: lib/src/gain_lib.c
+hexagon_Debug_toolv87_v73/gain_lib.o: lib/inc/gain_lib.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/ar_utils/ar_defs.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/gpr/platform/qurt/osal/api/ar_osal_types.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/test/test_capi/inc/stringl.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/ar_utils/hexagon/sim/ar_msg.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/ar_utils/ar_error_codes.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_std.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/hexagon/posal_types.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/hexagon/posal_atomic.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/hexagon/posal_intrinsics.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_memory.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_memorymap.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_heapmgr.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/hexagon/posal_channel.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_signal.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_queue.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_bufpool.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_cache.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_mutex.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_nmutex.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_thread.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_timer.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_interrupt.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_condvar.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_island.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_data_log.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_globalstate.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_thread_prio.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_thread_profiling.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/incs/HAP_farf.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/gpr/platform/qurt/osal/api/ar_osal_error.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/core/api/services/assert.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/rtos/qurt/computev73/include/qurt/atomic_ops.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/generic/posal_tgt_util.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/incs/stddef/AEEStdDef.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/incs/HAP_debug.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/rtos/qurt/computev73/include/qurt/qurt_atomic_ops.h
+hexagon_Debug_toolv87_v73/gain_lib.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/rtos/qurt/computev73/include/qurt/atomic_ops_plat.h

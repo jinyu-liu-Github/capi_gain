@@ -1,0 +1,1 @@
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/tools/HEXAGON_Tools/8.7.06/Tools/bin/hexagon-sim -mv73na_1 --simulated_returnval --usefs hexagon_Debug_toolv87_v73 --pmu_statsfile hexagon_Debug_toolv87_v73/pmu_stats.txt    hexagon_Debug_toolv87_v73/capi_gain_q --    

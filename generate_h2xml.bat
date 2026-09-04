@@ -1,0 +1,1 @@
+..\..\tools\h2xml\h2xml.exe -conf ..\..\tools\h2xml\h2xm_config_ar.xml -rtf ..\..\tools\h2xml\h2xml_rtf_template_ar.rtf -t spfModule  -I ..\..\incs\gpr\platform\qurt\osal\api -I ..\..\incs\api\apm -I ..\..\incs\api\ar_utils -I ..\..\incs\api\modules -I ..\..\incs\spm\api -I ..\..\incs\spm\common\internal_api\imcl\api -i api\gain_module_api.h -o .

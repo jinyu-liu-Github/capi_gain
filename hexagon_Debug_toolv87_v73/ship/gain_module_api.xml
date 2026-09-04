@@ -1,0 +1,66 @@
+<MODULE_DEF versionMajor="0x0" versionMinor="0x0" versionBranch="0x0" versionSubBranch="0x0" title1="Gain Module API" _title_agile_rev="Gain Module API"
+  title_date="Oct 03, 2019">
+  <PROCESSORS/>
+  <MODULE_LIST>
+    <MODULE name="MODULE_ID_GAIN_MODULE" id="0x8700106f" displayName="Gain Module" modMajorType="0x2" description="Gain Module \n- Supports following params: -#[
+      #] PARAM_ID_MODULE_ENABLE - PARAM_ID_GAIN_MODULE_GAIN - \n- Supported Input Media Format: - Data Format          : FIXED_POINT - fmt_id               :#[
+      #] Don't care - Sample Rates         : Don't care - Number of channels   : 1 to 32 - Channel type         : Don't care - Bits per sample      : 16, 32 - Q#[
+      #] format             : Don't care - Interleaving         : de-interleaved unpacked - Signed/unsigned      : Signed" builtin="false">
+      <MODULE_INFO>
+        <DATA_PORT_INFO>
+          <INPUT_PORTS max="0x1">
+            <PORT name="IN" id="0x2"/>
+          </INPUT_PORTS>
+          <OUTPUT_PORTS max="0x1">
+            <PORT name="OUT" id="0x1"/>
+          </OUTPUT_PORTS>
+        </DATA_PORT_INFO>
+        <CONTROL_PORT_INFO>
+          <STATIC/>
+          <DYNAMIC/>
+        </CONTROL_PORT_INFO>
+        <CAPABILITIES/>
+        <SUPPORTEDCONTTYPES>
+          <SUPPORTEDCONTTYPE name="Specialized" id="0xb001000"/>
+          <SUPPORTEDCONTTYPE name="Generic" id="0xb001001"/>
+        </SUPPORTEDCONTTYPES>
+        <STACKSIZE stackSize="0x1000"/>
+        <TOOL_POLICIES>
+          <POLICY name="CALIBRATION"/>
+        </TOOL_POLICIES>
+      </MODULE_INFO>
+      <PARAMETER_LIST>
+        <PARAMETER name="PARAM_ID_MODULE_ENABLE" pid="0x8001026" maxSize="0x4" description="ID for the Enable parameter used by any audio processing module. This#[
+          #] generic/common parameter is used to configure or determine the state of any audio processing module.">
+          <TOOL_POLICIES>
+            <POLICY name="CALIBRATION"/>
+            <POLICY name="RTC"/>
+          </TOOL_POLICIES>
+          <DEFAULT_DEPENDENCIES/>
+          <CONFIG_ELEMENT name="enable" type="uint32_t" typeUnSigned="true" byteSize="0x4" byteOffset="0x0" min="0x0" max="0xffffffff" default="0x0"
+            description="Specifies whether the module is to be enabled or disabled." policy="BASIC">
+            <RANGE_LIST>
+              <RANGE name="Disable" value="0x0"/>
+              <RANGE name="Enable" value="0x1"/>
+            </RANGE_LIST>
+          </CONFIG_ELEMENT>
+        </PARAMETER>
+        <PARAMETER name="PARAM_ID_GAIN_MODULE_GAIN" pid="0x8001175" maxSize="0x4" description="Configures the gain">
+          <TOOL_POLICIES>
+            <POLICY name="CALIBRATION"/>
+            <POLICY name="RTC"/>
+          </TOOL_POLICIES>
+          <DEFAULT_DEPENDENCIES/>
+          <CONFIG_ELEMENT name="gain" type="uint16_t" typeUnSigned="true" byteSize="0x2" byteOffset="0x0" min="0x0" max="0xffff" default="0x2000"
+            description="Linear gain (in Q13 format)" dataFormat="Q13"/>
+          <CONFIG_ELEMENT name="reserved" type="uint16_t" typeUnSigned="true" byteSize="0x2" byteOffset="0x2" min="0x0" max="0xffff" default="0x0"
+            description="Clients must set this field to 0.">
+            <RANGE_LIST>
+              <RANGE name="0" value="0x0"/>
+            </RANGE_LIST>
+          </CONFIG_ELEMENT>
+        </PARAMETER>
+      </PARAMETER_LIST>
+    </MODULE>
+  </MODULE_LIST>
+</MODULE_DEF>

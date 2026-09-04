@@ -1,0 +1,116 @@
+SPF_ROOT = $(HEXAGON_SDK_ROOT)/addons/audio/spf
+INC_DIR_AUDIO = $(SPF_ROOT)/incs
+QHL_ROOT = $(HEXAGON_SDK_ROOT)/libs/qhl
+QHL_PREBUILT = $(QHL_ROOT)/prebuilt/hexagon_toolv87_$(V_ARCH)
+QHL_LIBS = \
+   $(QHL_PREBUILT)/libqhdsp.a \
+   $(QHL_PREBUILT)/libqhcomplex.a \
+   $(QHL_PREBUILT)/libqhmath.a \
+   $(QHL_PREBUILT)/libqhblas.a
+
+NO_QURT_INC=1
+INCDIRS += \
+   capi/inc \
+   capi/src \
+   lib/inc \
+   api \
+   $(QHL_ROOT)/inc/qhmath \
+   $(QHL_ROOT)/inc/qhcomplex \
+   $(QHL_ROOT)/inc/qhblas \
+   $(QHL_ROOT)/inc/qhdsp \
+   $(SPF_ROOT)/test/test_capi/inc \
+   $(INC_DIR_AUDIO)/spf/interfaces/module/capi/adv \
+   $(INC_DIR_AUDIO)/spf/interfaces/module/capi \
+   $(INC_DIR_AUDIO)/spf/interfaces/module/shared_lib_api/inc \
+   $(INC_DIR_AUDIO)/spf/interfaces/module/capi_cmn/inc \
+   $(INC_DIR_AUDIO)/spf/interfaces/module/metadata/api \
+   $(INC_DIR_AUDIO)/api/ar_utils \
+   $(INC_DIR_AUDIO)/api/apm \
+   $(INC_DIR_AUDIO)/api/ar_utils/hexagon/sim \
+   $(INC_DIR_AUDIO)/api/modules \
+   $(INC_DIR_AUDIO)/platform/posal/inc/hexagon \
+   $(INC_DIR_AUDIO)/platform/posal/inc/generic \
+   $(HEXAGON_SDK_ROOT)/rtos/qurt/compute$(V_ARCH)/include/qurt \
+   $(INC_DIR_AUDIO)/platform/posal/inc \
+   $(INC_DIR_AUDIO)/gpr/platform/qurt/osal/api \
+   $(INC_DIR_AUDIO)/core/api/services \
+   
+STATIC_BUILD = FALSE
+#Uncomment below line to print error if module does not support static compilation
+#ERROR_MSG = NO_STATIC_COMPILATION_POSSIBLE_HERE
+
+ifndef STATIC
+V_TARGET_TYPE = DYNAMIC
+else
+	ifeq ($(STATIC), $(STATIC_BUILD))
+	V_TARGET_TYPE = DYNAMIC
+	else
+	V_TARGET_TYPE = STATIC
+#Placeholder for ERROR Message if module does not support STATIC Compilation
+$(info ERROR_MSG="$(ERROR_MSG)")
+CXX_FLAGS +=-U__V_DYNAMIC__
+CPP_FLAGS +=-U__V_DYNAMIC__
+	endif
+endif
+
+$(info V_TARGET_TYPE="$(V_TARGET_TYPE)")
+TYPE_DYNAMIC = DYNAMIC
+
+ifeq ($(TYPE_DYNAMIC), $(V_TARGET_TYPE))
+BUILD_DLLS = capi_gain
+else
+BUILD_LIBS = capi_gain
+endif
+
+capi_gain_C_SRCS +=  \
+capi/src/capi_gain \
+					capi/src/capi_gain_utils \
+					lib/src/gain_lib \
+					$(SPF_ROOT)/examples/so_version/version_shared_lib \
+
+ifneq ($(TYPE_DYNAMIC), $(V_TARGET_TYPE))
+capi_gain_C_SRCS += capi_entry_functions
+endif
+
+$(info BUILD_LIBS="$(BUILD_LIBS)")
+# quality test 
+BUILD_QEXES += capi_gain_q
+#capi_gain_q_OSTYPE = QURT
+capi_gain_q_CPP_SRCS = $(SPF_ROOT)/test/test_capi/src/capi_unit_test  
+#rename as capi_unit_test and linnk as lib 
+
+capi_gain_q_LIBS =  test_capi capi_utils_props test_util test_profile rtld atomic posal_utils spf_ref_counter spf_list_utils posal_stub
+capi_gain_q_LIBS += $(BUILD_LIBS)
+capi_gain_LIBS += $(QHL_LIBS)
+capi_gain_q_LIBS += $(QHL_LIBS)
+
+#Module entry function names passed on from here
+MODULE_ENTRY_FUNCTIONS = -DCAPI_STATIC_PROP_FUNCTION=\"capi_gain_get_static_properties\" -DCAPI_INIT_FUNCTION=\"capi_gain_init\"
+MODULE_SHARED_OBJECT_NAME = -DCAPI_SO_NAME=\"capi_gain.so\"
+MODULE_SHARED_OBJECT_VERSION_NAME = -DCAPI_SO_VERSION=\"capi_gain.so.1.0\"
+
+CC_FLAGS+= $(MODULE_ENTRY_FUNCTIONS) $(MODULE_SHARED_OBJECT_NAME) $(MODULE_SHARED_OBJECT_VERSION_NAME)
+CXX_FLAGS+= $(MODULE_ENTRY_FUNCTIONS) $(MODULE_SHARED_OBJECT_NAME) $(MODULE_SHARED_OBJECT_VERSION_NAME)
+
+capi_gain_q_LIBS += $(HEXAGON_LIB_DIR)/$(V_ARCH)/G0/libstdc++.a
+
+# if building shared object must also list it as a dependency to the qtest
+
+ifeq ($(TYPE_DYNAMIC), $(V_TARGET_TYPE))
+$V/capi_gain_q.ok:
+			$V/capi_gain_q $V/capi_gain$(DLL_EXT)
+else
+$V/capi_gain_q.ok:
+			$V/capi_gain_q
+endif
+
+# specify final build products, in this case the module's header file and
+# its associated libraries (and shared objects)
+BUILD_COPIES = \
+   capi/inc/capi_gain.h \
+   $(DLLS) \
+   $(LIBS) \
+   $(SHIP_DIR)/ ;
+
+
+  

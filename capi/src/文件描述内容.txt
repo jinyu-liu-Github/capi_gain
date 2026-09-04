@@ -1,0 +1,5 @@
+capi_gain1.c：第一组浮点基准测试（sqrt、复数模、向量点积、IIR），当前启用 QHBLAS 向量点积。
+capi_gain2.c：第二组浮点基准测试（rsqrt、复数 exp、向量范数、FIR 抽取），当前启用 QHMATH 倒数平方根。
+capi_gain3.c：定点基准测试组（Q8.8 除法、整数开方、int16 点积、Q15 FIR），当前启用 QHMATH 定点除法。
+capi_gain4.c：混合浮点/整数的 modexp 基准测试版本，内容与 capi_gain.c 基本相同
+capi_gain5.c：增益模块主文件，集成全部浮点/定点基准测试，当前启用 QHL modexp_af 混合精度测试，未启用任何宏时执行正常音频增益。

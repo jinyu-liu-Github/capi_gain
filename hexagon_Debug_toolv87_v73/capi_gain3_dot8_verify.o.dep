@@ -1,0 +1,174 @@
+capi/src/capi_gain3_dot8_verify.c:
+capi/inc/capi_gain.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/libs/qhl/inc/qhmath/qhmath.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/libs/qhl/inc/qhcomplex/qhcomplex.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/libs/qhl/inc/qhblas/qhblas.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/libs/qhl/inc/qhdsp/qhdsp.h:
+capi/src/capi_gain_utils.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/capi.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/ar_utils/ar_defs.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/libs/qhl/inc/qhdsp/qhdsp_common.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/shared_lib_api/inc/shared_lib_api.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/test/test_capi/inc/capi_test_utils.h:
+api/gain_module_api.h:
+lib/inc/gain_lib.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/capi_types.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/capi_events.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/capi_properties.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/capi_intf_extn_metadata.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/gpr/platform/qurt/osal/api/ar_osal_types.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/ar_utils/ar_error_codes.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/adv/capi_fwk_extns_dm.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/adv/capi_fwk_extns_ecns.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/capi_fwk_extns_multi_port_buffering.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/capi_fwk_extns_signal_triggered_module.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/adv/capi_fwk_extns_soft_timer.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/adv/capi_fwk_extns_sync.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/capi_fwk_extns_trigger_policy.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/adv/capi_fwk_extns_voice_delivery.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/capi_fwk_extns_bt_codec.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/adv/capi_fwk_extns_pcm.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/adv/capi_fwk_extns_container_proc_duration.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/capi_intf_extn_data_port_operation.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/adv/capi_intf_extn_path_delay.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/capi_intf_extn_prop_port_ds_state.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/capi_intf_extn_prop_is_rt_port_property.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/capi_lib_capi_process_thread.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/capi_lib_get_capi_module.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/core/api/services/assert.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/test/test_capi/inc/capi_diag.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/capi_intf_extn_imcl.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/modules/module_cmn_api.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/ar_utils/spf_begin_pack.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/ar_utils/spf_end_pack.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/ar_utils/ar_guids.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/metadata/api/module_cmn_metadata.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/ar_utils/spf_begin_pragma.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/ar_utils/spf_end_pragma.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/gpr/platform/qurt/osal/api/ar_osal_error.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/test/test_capi/inc/stringl.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/ar_utils/hexagon/sim/ar_msg.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_std.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/hexagon/posal_types.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/hexagon/posal_atomic.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/hexagon/posal_intrinsics.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_memory.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_memorymap.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_heapmgr.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/hexagon/posal_channel.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_signal.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_queue.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_bufpool.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_cache.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_mutex.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_nmutex.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_thread.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_timer.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_interrupt.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_condvar.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_island.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_data_log.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_globalstate.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_thread_prio.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_thread_profiling.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/apm/apm_graph_properties.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/modules/media_fmt_api.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/modules/metadata_api.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/incs/HAP_farf.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/rtos/qurt/computev73/include/qurt/atomic_ops.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/generic/posal_tgt_util.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/modules/media_fmt_api_basic.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/modules/media_fmt_api_ext.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/modules/codec_metadata_api.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/incs/stddef/AEEStdDef.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/incs/HAP_debug.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/rtos/qurt/computev73/include/qurt/qurt_atomic_ops.h:
+C:/Qualcomm/Hexagon_SDK/5.5.6.0/rtos/qurt/computev73/include/qurt/atomic_ops_plat.h:
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: capi/src/capi_gain3_dot8_verify.c
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: capi/inc/capi_gain.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/libs/qhl/inc/qhmath/qhmath.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/libs/qhl/inc/qhcomplex/qhcomplex.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/libs/qhl/inc/qhblas/qhblas.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/libs/qhl/inc/qhdsp/qhdsp.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: capi/src/capi_gain_utils.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/capi.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/ar_utils/ar_defs.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/libs/qhl/inc/qhdsp/qhdsp_common.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/shared_lib_api/inc/shared_lib_api.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/test/test_capi/inc/capi_test_utils.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: api/gain_module_api.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: lib/inc/gain_lib.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/capi_types.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/capi_events.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/capi_properties.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/capi_intf_extn_metadata.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/gpr/platform/qurt/osal/api/ar_osal_types.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/ar_utils/ar_error_codes.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/adv/capi_fwk_extns_dm.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/adv/capi_fwk_extns_ecns.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/capi_fwk_extns_multi_port_buffering.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/capi_fwk_extns_signal_triggered_module.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/adv/capi_fwk_extns_soft_timer.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/adv/capi_fwk_extns_sync.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/capi_fwk_extns_trigger_policy.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/adv/capi_fwk_extns_voice_delivery.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/capi_fwk_extns_bt_codec.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/adv/capi_fwk_extns_pcm.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/adv/capi_fwk_extns_container_proc_duration.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/capi_intf_extn_data_port_operation.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/adv/capi_intf_extn_path_delay.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/capi_intf_extn_prop_port_ds_state.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/capi_intf_extn_prop_is_rt_port_property.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/capi_lib_capi_process_thread.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/capi_lib_get_capi_module.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/core/api/services/assert.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/test/test_capi/inc/capi_diag.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/capi/capi_intf_extn_imcl.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/modules/module_cmn_api.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/ar_utils/spf_begin_pack.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/ar_utils/spf_end_pack.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/ar_utils/ar_guids.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/spf/interfaces/module/metadata/api/module_cmn_metadata.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/ar_utils/spf_begin_pragma.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/ar_utils/spf_end_pragma.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/gpr/platform/qurt/osal/api/ar_osal_error.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/test/test_capi/inc/stringl.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/ar_utils/hexagon/sim/ar_msg.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_std.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/hexagon/posal_types.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/hexagon/posal_atomic.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/hexagon/posal_intrinsics.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_memory.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_memorymap.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_heapmgr.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/hexagon/posal_channel.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_signal.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_queue.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_bufpool.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_cache.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_mutex.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_nmutex.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_thread.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_timer.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_interrupt.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_condvar.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_island.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_data_log.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_globalstate.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_thread_prio.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/posal_thread_profiling.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/apm/apm_graph_properties.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/modules/media_fmt_api.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/modules/metadata_api.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/incs/HAP_farf.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/rtos/qurt/computev73/include/qurt/atomic_ops.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/platform/posal/inc/generic/posal_tgt_util.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/modules/media_fmt_api_basic.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/modules/media_fmt_api_ext.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/addons/audio/spf/incs/api/modules/codec_metadata_api.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/incs/stddef/AEEStdDef.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/incs/HAP_debug.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/rtos/qurt/computev73/include/qurt/qurt_atomic_ops.h
+hexagon_Debug_toolv87_v73/capi_gain3_dot8_verify.o: C:/Qualcomm/Hexagon_SDK/5.5.6.0/rtos/qurt/computev73/include/qurt/atomic_ops_plat.h

@@ -1,0 +1,32 @@
+SPF_ROOT = $(HEXAGON_SDK_ROOT)/addons/audio/spf
+# must list all variants supported by this project
+SUPPORTED_VS = $(default_VS)
+
+# must list all the dependencies of this project
+DEPENDENCIES = \
+  ATOMIC \
+  CAPI_UTILS_PROPS \
+  TEST_CAPI \
+  SIM_UTIL \
+  TEST_PROFILE \
+  POSAL_UTILS \
+  SPF_REF_COUNTER \
+  SPF_LIST_UTILS \
+  POSAL_STUB \
+
+# TEST_CAPI_VOICE \
+# each dependency needs a directory definition
+#  the form is <DEPENDENCY NAME>_DIR
+#  for example:
+#    DEPENDENCIES = FOO
+#    FOO_DIR = $(HEXAGON_SDK_ROOT)/examples/common/foo
+#
+ATOMIC_DIR = $(HEXAGON_SDK_ROOT)/libs/atomic
+CAPI_UTILS_PROPS_DIR = $(SPF_ROOT)/libs/capi_utils_props
+TEST_CAPI_DIR = $(SPF_ROOT)/test/test_capi
+SIM_UTIL_DIR = $(HEXAGON_SDK_ROOT)/utils/sim_utils
+TEST_PROFILE_DIR = $(HEXAGON_SDK_ROOT)/utils/sim_profiler
+POSAL_UTILS_DIR = $(SPF_ROOT)/libs/posal_utils
+SPF_REF_COUNTER_DIR = $(SPF_ROOT)/incs/spf/utils/cmn
+SPF_LIST_UTILS_DIR = $(SPF_ROOT)/incs/spf/utils/list
+POSAL_STUB_DIR = $(SPF_ROOT)/libs/posal_stub
