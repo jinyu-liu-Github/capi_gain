@@ -33,7 +33,7 @@
 #include "capi_gain_utils.h"
 #include <math.h>    /* sinf/floorf: one-time sine LUT init */
 #include <string.h>  /* memset */
-
+#include <vector.h>
 /*------------------------------------------------------------------------
  * Sine LUT (shared by all instances, built once at init)
  * -----------------------------------------------------------------------*/
