@@ -24,7 +24,7 @@
  *   - Output width follows the operating media format:
  *     16-bit Q15 directly, 32-bit Q27 shifted << 12, 32-bit Q31 shifted << 16.
  */
-
+#include <vector.h>
 /*------------------------------------------------------------------------
  * Include files
  * -----------------------------------------------------------------------*/
