@@ -37,6 +37,7 @@
 /*------------------------------------------------------------------------
  * Sine LUT (shared by all instances, built once at init)
  * -----------------------------------------------------------------------*/
+#define TONE_LUT_TEST 128
 #define TONE_LUT_SIZE 256
 #define TONE_LUT_SHIFT 8 /* log2(TONE_LUT_SIZE) */
 #define TONE_LUT_MASK (TONE_LUT_SIZE - 1)
